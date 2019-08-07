@@ -1,0 +1,13 @@
+!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+a	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/deleteThis/deleteThis.py	/^    a = np.cos(theta)$/;"	v	language:Python
+b	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/deleteThis/deleteThis.py	/^    b = np.sin(theta)$/;"	v	language:Python
+edges	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/deleteThis/deleteThis.py	/^edges = cv2.Canny(gray,50,150,apertureSize = 3)$/;"	v	language:Python
+gray	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/deleteThis/deleteThis.py	/^gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)$/;"	v	language:Python
+img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/deleteThis/deleteThis.py	/^img = cv2.imread("\/home\/dwijesh\/Pictures\/deleteThis.jpg")$/;"	v	language:Python
+lines	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/deleteThis/deleteThis.py	/^lines = cv2.HoughLines(edges,1,np.pi\/180,100)$/;"	v	language:Python
+x0	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/deleteThis/deleteThis.py	/^    x0 = a*rho$/;"	v	language:Python
+x1	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/deleteThis/deleteThis.py	/^    x1 = int(x0 + 1000*(-b))$/;"	v	language:Python
+x2	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/deleteThis/deleteThis.py	/^    x2 = int(x0 - 1000*(-b))$/;"	v	language:Python
+y0	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/deleteThis/deleteThis.py	/^    y0 = b*rho$/;"	v	language:Python
+y1	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/deleteThis/deleteThis.py	/^    y1 = int(y0 + 1000*(a))$/;"	v	language:Python
+y2	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/deleteThis/deleteThis.py	/^    y2 = int(y0 - 1000*(a))$/;"	v	language:Python
