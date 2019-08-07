@@ -38,7 +38,8 @@ cv2.imwrite("dilate.jpg", img)
 
 
 path2 = "/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/frames/frames224.jpg"
-rgb_image = cv2.imread(path)
+bgr = cv2.imread(path,1)
+
 #img = np.uint8(img)
 #img = cv2.Canny(img,700,900)
 img = np.uint8(img)
@@ -53,7 +54,7 @@ for rho,theta in lines[0]:
     x2 = int(x0 - 1000*(-b))
     y2 = int(y0 - 1000*(a))
 
-    cv2.line(rgb_image,(x1,y1),(x2,y2),(255,255,255),2)
+    cv2.line(bgr,(x1,y1),(x2,y2),(0,0,255),2)
     
  
-cv2.imwrite("houghLines.jpg", rgb_image)
+cv2.imwrite("houghLines.jpg", bgr)
