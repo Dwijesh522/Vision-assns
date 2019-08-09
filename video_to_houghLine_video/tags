@@ -1,0 +1,12 @@
+!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+frames_size	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/video_to_houghLine_video/houghLines.py	/^    frames_size = video_to_frames(path)                                                         # in cwd, creates a "frames" directory and saves ith frame as "framei.jpg"$/;"	v	language:Python
+frame_i_path	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/video_to_houghLine_video/houghLines.py	/^        frame_i_path = os.getcwd() + "\/frames\/frame" + str(i) + ".jpg"                          # path to ith simple frame $/;"	v	language:Python
+i	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/video_to_houghLine_video/houghLines.py	/^    i = 1$/;"	v	language:Python
+knnFrames_size	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/video_to_houghLine_video/houghLines.py	/^    knnFrames_size = 463$/;"	v	language:Python
+knnFrames_size	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/video_to_houghLine_video/houghLines.py	/^    knnFrames_size = video_to_knnFrames(path)                                                   # in cwd, creates a "knn_frames" directory and saves ith knn frame as "framei.jpg"$/;"	v	language:Python
+knnFrame_i_path	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/video_to_houghLine_video/houghLines.py	/^        knnFrame_i_path = os.getcwd() + "\/knn_frames\/frame" + str(i) + ".jpg"                   # path to ith knn frame$/;"	v	language:Python
+knn_to_hough_frame	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/video_to_houghLine_video/houghLines.py	/^def knn_to_hough_frame(path, background_img_path, outImg_name):$/;"	f	language:Python
+outImg_name	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/video_to_houghLine_video/houghLines.py	/^        outImg_name = "frame" + str(i) + ".jpg"$/;"	v	language:Python
+path	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/video_to_houghLine_video/houghLines.py	/^    path = input("Enter the path to video(including video name): ")$/;"	v	language:Python
+video_to_frames	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/video_to_houghLine_video/houghLines.py	/^def video_to_frames(path):$/;"	f	language:Python
+video_to_knnFrames	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/video_to_houghLine_video/houghLines.py	/^def video_to_knnFrames(path):$/;"	f	language:Python

@@ -1,15 +1,3 @@
 !_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
-img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/open_55_1.py	/^  img = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel_rect)$/;"	v	language:Python
-img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/open_55_1.py	/^img = cv2.imread(path,0)$/;"	v	language:Python
-img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/open_5_1.py	/^  img = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel_rect)$/;"	v	language:Python
-img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/open_5_1.py	/^img = cv2.imread(path,0)$/;"	v	language:Python
-kernel_cross	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/open_55_1.py	/^kernel_cross = cv2.getStructuringElement(cv2.MORPH_CROSS,(5,5))$/;"	v	language:Python
-kernel_cross	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/open_5_1.py	/^kernel_cross = cv2.getStructuringElement(cv2.MORPH_CROSS,(5,5))$/;"	v	language:Python
-kernel_ellipse	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/open_55_1.py	/^kernel_ellipse = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))$/;"	v	language:Python
-kernel_ellipse	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/open_5_1.py	/^kernel_ellipse = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))$/;"	v	language:Python
-kernel_rect	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/open_55_1.py	/^kernel_rect = cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))$/;"	v	language:Python
-kernel_rect	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/open_5_1.py	/^kernel_rect = cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))$/;"	v	language:Python
-path	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/open_55_1.py	/^path = "1.jpeg"$/;"	v	language:Python
-path	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/open_5_1.py	/^path = "1.jpeg"$/;"	v	language:Python
-start	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/open_55_1.py	/^start = 1$/;"	v	language:Python
-start	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/open_5_1.py	/^start = 1$/;"	v	language:Python
+path	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/video_to_frames.py	/^    path = input("Enter path to video(including video name): ")$/;"	v	language:Python
+video_to_frames	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/video_to_frames.py	/^def video_to_frames(path):$/;"	f	language:Python
