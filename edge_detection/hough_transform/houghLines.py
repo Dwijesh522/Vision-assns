@@ -35,7 +35,7 @@ kernel_rect4 = cv2.getStructuringElement(cv2.MORPH_RECT,(3, 3))
 img = cv2.dilate(img,kernel_rect4, iterations = 1)
 
 cv2.imwrite("dilate.jpg", img)
-
+img2 = img
 
 path2 = "/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/frames/frames224.jpg"
 bgr = cv2.imread(path,1)
@@ -43,18 +43,23 @@ bgr = cv2.imread(path,1)
 #img = np.uint8(img)
 #img = cv2.Canny(img,700,900)
 img = np.uint8(img)
-lines = cv2.HoughLines(img,1,np.pi/180,10)
-for rho,theta in lines[0]:
-    a = np.cos(theta)
-    b = np.sin(theta)
-    x0 = a*rho
-    y0 = b*rho
-    x1 = int(x0 + 1000*(-b))
-    y1 = int(y0 + 1000*(a))
-    x2 = int(x0 - 1000*(-b))
-    y2 = int(y0 - 1000*(a))
+cv2.imwrite("unit8_img.jpg", img)
+lines = cv2.HoughLines(img,5,np.pi/360,1790)
 
-    cv2.line(bgr,(x1,y1),(x2,y2),(0,0,255),2)
-    
+print("number of lines: ", len(lines))
+
+counter = 0
+while(counter != len(lines)):
+    for rho,theta in lines[counter]:
+        a = np.cos(theta)
+        b = np.sin(theta)
+        x0 = a*rho
+        y0 = b*rho
+        x1 = int(x0 + 1000*(-b))
+        y1 = int(y0 + 1000*(a))
+        x2 = int(x0 - 1000*(-b))
+        y2 = int(y0 - 1000*(a))
+        cv2.line(bgr, (x1,y1),(x2,y2),(0,0,255),2)
+    counter += 1
  
 cv2.imwrite("houghLines.jpg", bgr)
