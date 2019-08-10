@@ -46,7 +46,7 @@ show_img(img, "dilate")
 cv2.imwrite("dilate.jpg", img)
 
 
-path2 = "/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/frames/frames224.jpg"
+path2 = path
 bgr = cv2.imread(path,1)
 
 img = np.uint8(img)

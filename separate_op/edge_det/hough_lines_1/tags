@@ -1,0 +1,22 @@
+!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+a	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^            a = np.cos(theta)$/;"	v	language:Python
+b	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^            b = np.sin(theta)$/;"	v	language:Python
+bgr	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^bgr = cv2.imread(path,1)$/;"	v	language:Python
+counter	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^counter = 0$/;"	v	language:Python
+img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^img = cv2.Canny(img,800,1200, apertureSize = 3)$/;"	v	language:Python
+img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^img = cv2.imread(path,0)$/;"	v	language:Python
+img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^img = np.uint8(img)$/;"	v	language:Python
+img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^img = pre_canny(img)$/;"	v	language:Python
+lines	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^lines = cv2.HoughLines(img,5,np.pi\/360,320)$/;"	v	language:Python
+lines	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^lines = []$/;"	v	language:Python
+path	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^path = input("path to image(including image name): ")$/;"	v	language:Python
+path2	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^path2 = path$/;"	v	language:Python
+post_canny	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^def post_canny(img):$/;"	f	language:Python
+pre_canny	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^def pre_canny(img): $/;"	f	language:Python
+show_img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^def show_img(img, name):$/;"	f	language:Python
+x0	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^            x0 = a*rho$/;"	v	language:Python
+x1	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^            x1 = int(x0 + 1000*(-b))$/;"	v	language:Python
+x2	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^            x2 = int(x0 - 1000*(-b))$/;"	v	language:Python
+y0	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^            y0 = b*rho$/;"	v	language:Python
+y1	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^            y1 = int(y0 + 1000*(a))$/;"	v	language:Python
+y2	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^            y2 = int(y0 - 1000*(a))$/;"	v	language:Python

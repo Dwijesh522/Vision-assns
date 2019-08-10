@@ -3,11 +3,10 @@ import cv2
 
 path = "/home/dwijesh/Documents/sem5/vision/assns/assn1/code/knn_frames/frames224.jpg"
 img = cv2.imread(path,0)
-kernel_rect1 = cv2.getStructuringElement(cv2.MORPH_RECT,(3, 15))
-kernel_rect2 = cv2.getStructuringElement(cv2.MORPH_RECT,(1, 3))
-kernel_rect3 = cv2.getStructuringElement(cv2.MORPH_RECT,(2, 5))
-kernel_ellipse = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
-kernel_cross = cv2.getStructuringElement(cv2.MORPH_CROSS,(7,7))
+kernel_rect1 = cv2.getStructuringElement(cv2.MORPH_RECT,(1, 10))
+kernel_rect2 = cv2.getStructuringElement(cv2.MORPH_RECT,(1, 2))
+kernel_rect3 = cv2.getStructuringElement(cv2.MORPH_RECT,(1, 9))
+kernel_rect4 = cv2.getStructuringElement(cv2.MORPH_RECT,(1, 2))
 
 
 # eliminate verticle part of ring
@@ -20,5 +19,7 @@ img = cv2.erode(img, kernel_rect2, iterations=1)
 img = cv2.medianBlur(img,7)
 
 img = cv2.erode(img, kernel_rect3, iterations=1)
+img = cv2.erode(img, kernel_rect4, iterations=1)
+img = cv2.medianBlur(img, 7)
 
 cv2.imwrite("frame_1.jpg", img)

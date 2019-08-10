@@ -1,0 +1,23 @@
+Issues:
+	1) one sided
+	2) for smaller smaller part of the rod seen, no line is formed
+	3) works good on some videos and not on some other videos
+	4) efficiently decide the medial axis
+	5) stop immediate transitions of line
+	6) model stationary rod
+
+
+
+
+
+version_0			vs			version_1
+					-post_canny
+						less number of lines, more faverable
+						lines
+					+pre_canny
+						+erode
+						+erode
+						+medianBlur
+						to increase the length of the object
+						and to thicken the ring
+

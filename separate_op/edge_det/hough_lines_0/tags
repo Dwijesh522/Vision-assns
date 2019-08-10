@@ -1,25 +1,25 @@
 !_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
-bgr	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^bgr = cv2.imread(path,1)$/;"	v	language:Python
-counter	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^counter = 0$/;"	v	language:Python
-img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^img = cv2.Canny(img,800,1200, apertureSize = 3)$/;"	v	language:Python
-img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^img = cv2.dilate(img,kernel_rect4, iterations = 1)$/;"	v	language:Python
-img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^img = cv2.erode(img, kernel_rect1, iterations=1)$/;"	v	language:Python
-img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^img = cv2.erode(img, kernel_rect2, iterations=1)$/;"	v	language:Python
-img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^img = cv2.erode(img, kernel_rect3, iterations=1)$/;"	v	language:Python
-img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^img = cv2.imread(path,0)$/;"	v	language:Python
-img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^img = cv2.medianBlur(img,7)$/;"	v	language:Python
-img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^img = cv2.sqrt(cv2.add(cv2.pow(sobelx,2), cv2.pow(sobely,2)))$/;"	v	language:Python
-img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^img = np.uint8(img)$/;"	v	language:Python
-kernel_cross	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^kernel_cross = cv2.getStructuringElement(cv2.MORPH_CROSS,(7,7))$/;"	v	language:Python
-kernel_ellipse	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^kernel_ellipse = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))$/;"	v	language:Python
-kernel_rect1	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^kernel_rect1 = cv2.getStructuringElement(cv2.MORPH_RECT,(3, 15))$/;"	v	language:Python
-kernel_rect2	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^kernel_rect2 = cv2.getStructuringElement(cv2.MORPH_RECT,(1, 3))$/;"	v	language:Python
-kernel_rect3	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^kernel_rect3 = cv2.getStructuringElement(cv2.MORPH_RECT,(1, 15))$/;"	v	language:Python
-kernel_rect4	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^kernel_rect4 = cv2.getStructuringElement(cv2.MORPH_RECT,(3, 3))$/;"	v	language:Python
-lines	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^lines = cv2.HoughLines(img,5,np.pi\/360,1790)$/;"	v	language:Python
-path	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^path = input("path to image(including image name): ")$/;"	v	language:Python
-path2	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^path2 = "\/home\/dwijesh\/Documents\/sem5\/vision\/assns\/assn1\/Vision-assns\/frames\/frames224.jpg"$/;"	v	language:Python
-show_img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^def show_img(img, name):$/;"	f	language:Python
-sobelx	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^sobelx = cv2.Sobel(img,cv2.CV_64F,1,0,ksize=5)$/;"	v	language:Python
-sobely	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^sobely = cv2.Sobel(img,cv2.CV_64F,0,1,ksize =5)$/;"	v	language:Python
-start	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/edge_detection/hough_lines_0/houghLines.py	/^start = 1$/;"	v	language:Python
+bgr	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^bgr = cv2.imread(path,1)$/;"	v	language:Python
+counter	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^counter = 0$/;"	v	language:Python
+img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^img = cv2.Canny(img,800,1200, apertureSize = 3)$/;"	v	language:Python
+img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^img = cv2.dilate(img,kernel_rect4, iterations = 1)$/;"	v	language:Python
+img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^img = cv2.erode(img, kernel_rect1, iterations=1)$/;"	v	language:Python
+img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^img = cv2.erode(img, kernel_rect2, iterations=1)$/;"	v	language:Python
+img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^img = cv2.erode(img, kernel_rect3, iterations=1)$/;"	v	language:Python
+img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^img = cv2.imread(path,0)$/;"	v	language:Python
+img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^img = cv2.medianBlur(img,7)$/;"	v	language:Python
+img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^img = cv2.sqrt(cv2.add(cv2.pow(sobelx,2), cv2.pow(sobely,2)))$/;"	v	language:Python
+img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^img = np.uint8(img)$/;"	v	language:Python
+kernel_cross	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^kernel_cross = cv2.getStructuringElement(cv2.MORPH_CROSS,(7,7))$/;"	v	language:Python
+kernel_ellipse	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^kernel_ellipse = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))$/;"	v	language:Python
+kernel_rect1	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^kernel_rect1 = cv2.getStructuringElement(cv2.MORPH_RECT,(3, 15))$/;"	v	language:Python
+kernel_rect2	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^kernel_rect2 = cv2.getStructuringElement(cv2.MORPH_RECT,(1, 3))$/;"	v	language:Python
+kernel_rect3	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^kernel_rect3 = cv2.getStructuringElement(cv2.MORPH_RECT,(1, 15))$/;"	v	language:Python
+kernel_rect4	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^kernel_rect4 = cv2.getStructuringElement(cv2.MORPH_RECT,(3, 3))$/;"	v	language:Python
+lines	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^lines = cv2.HoughLines(img,5,np.pi\/360,1790)$/;"	v	language:Python
+path	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^path = input("path to image(including image name): ")$/;"	v	language:Python
+path2	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^path2 = path$/;"	v	language:Python
+show_img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^def show_img(img, name):$/;"	f	language:Python
+sobelx	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^sobelx = cv2.Sobel(img,cv2.CV_64F,1,0,ksize=5)$/;"	v	language:Python
+sobely	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^sobely = cv2.Sobel(img,cv2.CV_64F,0,1,ksize =5)$/;"	v	language:Python
+start	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_0/houghLines.py	/^start = 1$/;"	v	language:Python
