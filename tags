@@ -1,3 +1,0 @@
-!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
-path	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/video_to_frames.py	/^    path = input("Enter path to video(including video name): ")$/;"	v	language:Python
-video_to_frames	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/video_to_frames.py	/^def video_to_frames(path):$/;"	f	language:Python
