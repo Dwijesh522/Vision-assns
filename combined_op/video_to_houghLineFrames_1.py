@@ -74,11 +74,21 @@ def post_canny(img):
     #cv2.imwrite("dilate.jpg", img)
     return img
 
-def hough_lines(img, bgr):
+def store_img(img, image_name, dir_name):
+    if(os.path.isdir(dir_name)):
+        os.chdir(dir_name)
+    else:
+        os.mkdir(dir_name)
+        os.chdir(dir_name)
+    cv2.imwrite(image_name, img)
+    os.chdir("..")
+
+def hough_lines(img, bgr, counter):
 #    cv2.imshow("frame", img)
 #    cv2.waitKey(1000)
     img = np.uint8(img)
     lines = []
+    store_img(img, "frame" + str(counter) + ".jpg", "prehough_frames")
     lines = cv2.HoughLines(img,1,np.pi/360,100)
     if not lines is None:
         print(path, " has number of lines: ", len(lines))
@@ -110,22 +120,13 @@ def hough_lines(img, bgr):
         cv2.line(bgr, (math.ceil(x1_avg/lines_len), math.ceil(y1_avg/lines_len) ), ( math.ceil(x2_avg/lines_len), math.ceil(y2_avg/lines_len)), (0, 0, 255), 2)
     return bgr
 
-def store_img(img, image_name, dir_name):
-    if(os.path.isdir(dir_name)):
-        os.chdir(dir_name)
-    else:
-        os.mkdir(dir_name)
-        os.chdir(dir_name)
-    cv2.imwrite(image_name, img)
-    os.chdir("..")
-
-def knn_to_hough_frame(path, background_img_path, outImg_name):
+def knn_to_hough_frame(path, background_img_path, outImg_name, counter):
     img = cv2.imread(path,0)
     img = pre_canny(img)
     img = cv2.Canny(img,800,1200, apertureSize = 3)
     path2 = background_img_path
     bgr = cv2.imread(path2,1)
-    bgr = hough_lines(img, bgr)
+    bgr = hough_lines(img, bgr, counter)
     store_img(bgr, outImg_name, "houghFrames")
     
 
@@ -141,5 +142,5 @@ if __name__ == '__main__':
         knnFrame_i_path = os.getcwd() + "/knn_frames/frame" + str(i) + ".jpg" # path to ith knn frame
         frame_i_path = os.getcwd() + "/frames/frame" + str(i) + ".jpg" # path to ith simple frame 
         outImg_name = "frame" + str(i) + ".jpg"
-        knn_to_hough_frame(knnFrame_i_path,  frame_i_path, outImg_name) #in cwd, creates "hough_frames" directory and saves ith hough frame as "framei.jpg"
+        knn_to_hough_frame(knnFrame_i_path,  frame_i_path, outImg_name, i) #in cwd, creates "hough_frames" directory and saves ith hough frame as "framei.jpg"
         i += 1

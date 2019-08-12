@@ -1,0 +1,21 @@
+!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+delete_front	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/linked_list/linked_list.py	/^    def delete_front(self):$/;"	m	language:Python	class:Linked_list
+destruct_list	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/linked_list/linked_list.py	/^    def destruct_list(self):$/;"	m	language:Python	class:Linked_list
+five	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/linked_list/linked_list.py	/^    five = Node(1)$/;"	v	language:Python
+four	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/linked_list/linked_list.py	/^    four = Node(3)$/;"	v	language:Python
+get_delta	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/linked_list/linked_list.py	/^    def get_delta(self):$/;"	m	language:Python	class:Linked_list
+get_median	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/linked_list/linked_list.py	/^    def get_median(self):$/;"	m	language:Python	class:Linked_list
+get_size	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/linked_list/linked_list.py	/^    def get_size(self):$/;"	m	language:Python	class:Linked_list
+last1	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/linked_list/linked_list.py	/^    def last1(self):$/;"	m	language:Python	class:Linked_list
+Linked_list	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/linked_list/linked_list.py	/^class Linked_list:          $/;"	c	language:Python
+ll	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/linked_list/linked_list.py	/^    ll = Linked_list()$/;"	v	language:Python
+Node	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/linked_list/linked_list.py	/^class Node:$/;"	c	language:Python
+one	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/linked_list/linked_list.py	/^    one = Node(1)$/;"	v	language:Python
+push_back	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/linked_list/linked_list.py	/^    def push_back(self, node):$/;"	m	language:Python	class:Linked_list
+six	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/linked_list/linked_list.py	/^    six = Node(3)$/;"	v	language:Python
+three	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/linked_list/linked_list.py	/^    three = Node(1)$/;"	v	language:Python
+top1	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/linked_list/linked_list.py	/^    def top1(self):$/;"	m	language:Python	class:Linked_list
+top2	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/linked_list/linked_list.py	/^    def top2(self):$/;"	m	language:Python	class:Linked_list
+two	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/linked_list/linked_list.py	/^    two = Node(3)$/;"	v	language:Python
+__init__	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/linked_list/linked_list.py	/^    def __init__(self):$/;"	m	language:Python	class:Linked_list
+__init__	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/linked_list/linked_list.py	/^    def __init__(self, data):$/;"	m	language:Python	class:Node
