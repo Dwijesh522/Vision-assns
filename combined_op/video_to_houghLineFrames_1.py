@@ -13,10 +13,12 @@ def video_to_frames(path):
     is_read = 1
     while is_read:
         is_read, frame = vObj.read()
+        if not is_read:
+            break
         cv2.imwrite("frame%d.jpg" % counter, frame)
         counter += 1
     os.chdir("..")
-    return counter
+    return counter-1
 
 def video_to_knnFrames(path):
     dirname = "knn_frames"
@@ -37,23 +39,22 @@ def video_to_knnFrames(path):
     cap.release()
     cv2.destroyAllWindows()
     os.chdir("..")
-    return count
+    return count-1
 
-def pre_canny(img):
-    def pre_canny(img): 
-        kernel_rect1 = cv2.getStructuringElement(cv2.MORPH_RECT,(1, 10))
-        kernel_rect2 = cv2.getStructuringElement(cv2.MORPH_RECT,(1, 2))
-        kernel_rect3 = cv2.getStructuringElement(cv2.MORPH_RECT,(1, 9))
-        kernel_rect4 = cv2.getStructuringElement(cv2.MORPH_RECT,(1, 2))
+def pre_canny(img): 
+    kernel_rect1 = cv2.getStructuringElement(cv2.MORPH_RECT,(1, 10))
+    kernel_rect2 = cv2.getStructuringElement(cv2.MORPH_RECT,(1, 2))
+    kernel_rect3 = cv2.getStructuringElement(cv2.MORPH_RECT,(1, 9))
+    kernel_rect4 = cv2.getStructuringElement(cv2.MORPH_RECT,(1, 2))
 
-        img = cv2.erode(img, kernel_rect1, iterations=1)
-        img = cv2.erode(img, kernel_rect2, iterations=1)
-        img = cv2.medianBlur(img,7)
+    img = cv2.erode(img, kernel_rect1, iterations=1)
+    img = cv2.erode(img, kernel_rect2, iterations=1)
+    img = cv2.medianBlur(img,7)
 
-        img = cv2.erode(img, kernel_rect3, iterations=1)
-        img = cv2.erode(img, kernel_rect4, iterations=1)
-        img = cv2.medianBlur(img, 7)
-        return img
+    img = cv2.erode(img, kernel_rect3, iterations=1)
+    img = cv2.erode(img, kernel_rect4, iterations=1)
+    img = cv2.medianBlur(img, 7)
+    return img
 
 def post_canny(img):
     sobelx = cv2.Sobel(img,cv2.CV_64F,1,0,ksize=5)
@@ -74,9 +75,11 @@ def post_canny(img):
     return img
 
 def hough_lines(img, bgr):
+#    cv2.imshow("frame", img)
+#    cv2.waitKey(1000)
     img = np.uint8(img)
     lines = []
-    lines = cv2.HoughLines(img,1,np.pi/360,370)
+    lines = cv2.HoughLines(img,1,np.pi/360,100)
     if not lines is None:
         print(path, " has number of lines: ", len(lines))
     else:
@@ -132,6 +135,7 @@ if __name__ == '__main__':
     frames_size = video_to_frames(path)  # in cwd, creates a "frames" directory and saves ith frame as "framei.jpg"
     knnFrames_size = video_to_knnFrames(path) # in cwd, creates a "knn_frames" directory and saves ith knn frame as "framei.jpg"
 
+#    knnFrames_size = 463
     i = 1
     while(i <= knnFrames_size):
         knnFrame_i_path = os.getcwd() + "/knn_frames/frame" + str(i) + ".jpg" # path to ith knn frame

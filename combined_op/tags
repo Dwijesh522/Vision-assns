@@ -9,8 +9,7 @@ knn_to_hough_frame	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/
 outImg_name	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_1.py	/^        outImg_name = "frame" + str(i) + ".jpg"$/;"	v	language:Python
 path	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_1.py	/^    path = input("Enter the path to video(including video name): ")$/;"	v	language:Python
 post_canny	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_1.py	/^def post_canny(img):$/;"	f	language:Python
-pre_canny	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_1.py	/^    def pre_canny(img): $/;"	f	language:Python	function:pre_canny
-pre_canny	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_1.py	/^def pre_canny(img):$/;"	f	language:Python
+pre_canny	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_1.py	/^def pre_canny(img): $/;"	f	language:Python
 store_img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_1.py	/^def store_img(img, image_name, dir_name):$/;"	f	language:Python
 video_to_frames	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_1.py	/^def video_to_frames(path):$/;"	f	language:Python
 video_to_knnFrames	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_1.py	/^def video_to_knnFrames(path):$/;"	f	language:Python
