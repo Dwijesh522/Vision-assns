@@ -1,0 +1,39 @@
+!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+a	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/heapq.py	/^    a = heapq.heappop(arr)$/;"	v	language:Python
+a	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/heapq.py	/^    a = heapq.heappop(arr)$/;"	v	language:Python
+arr	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/heapq.py	/^    arr = [2.11, 1.111, 1.112, 1.111, 1.122]$/;"	v	language:Python
+b	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/heapq.py	/^    b = heapq.heappop(arr)$/;"	v	language:Python
+chunk_size	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^chunk_size = 3$/;"	v	language:Python
+counter	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^counter = 0$/;"	v	language:Python
+delete_front	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^    def delete_front(self):$/;"	m	language:Python	class:Linked_list
+destruct_list	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^    def destruct_list(self):$/;"	m	language:Python	class:Linked_list
+expected_collisions	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^expected_collisions = 0$/;"	v	language:Python
+frames_size	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^    frames_size = video_to_frames(path)  # in cwd, creates a "frames" directory and saves ith frame as "framei.jpg"$/;"	v	language:Python
+frame_i_path	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^        frame_i_path = os.getcwd() + "\/frames\/frame" + str(i) + ".jpg" # path to ith simple frame $/;"	v	language:Python
+get_delta	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^    def get_delta(self):$/;"	m	language:Python	class:Linked_list
+get_median	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^    def get_median(self):$/;"	m	language:Python	class:Linked_list
+get_size	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^    def get_size(self):$/;"	m	language:Python	class:Linked_list
+hough_lines	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^def hough_lines(img, bgr, img_path, collisions): $/;"	f	language:Python
+i	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^    i = 1$/;"	v	language:Python
+is_dynamic	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^is_dynamic = True       # threshold has not been approximated$/;"	v	language:Python
+knnFrames_size	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^    knnFrames_size = video_to_knnFrames(path) # in cwd, creates a "knn_frames" directory and saves ith knn frame as "framei.jpg"$/;"	v	language:Python
+knnFrame_i_path	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^        knnFrame_i_path = os.getcwd() + "\/knn_frames\/frame" + str(i) + ".jpg" # path to ith knn frame$/;"	v	language:Python
+knn_to_hough_frame	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^def knn_to_hough_frame(path, background_img_path, outImg_name):$/;"	f	language:Python
+last1	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^    def last1(self):$/;"	m	language:Python	class:Linked_list
+Linked_list	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^class Linked_list:          $/;"	c	language:Python
+Node	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^class Node:$/;"	c	language:Python
+number_of_ones	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^def number_of_ones(img):$/;"	f	language:Python
+outImg_name	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^        outImg_name = "frame" + str(i) + ".jpg"$/;"	v	language:Python
+past_thresholds	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^past_thresholds = Linked_list()$/;"	v	language:Python
+path	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^    path = input("Enter the path to video(including video name): ")$/;"	v	language:Python
+post_canny	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^def post_canny(img):$/;"	f	language:Python
+post_chunk_size	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^post_chunk_size = chunk_size*2$/;"	v	language:Python
+pre_canny	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^def pre_canny(img): $/;"	f	language:Python
+push_back	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^    def push_back(self, node):$/;"	m	language:Python	class:Linked_list
+store_img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^def store_img(img, image_name, dir_name):$/;"	f	language:Python
+top1	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^    def top1(self):$/;"	m	language:Python	class:Linked_list
+top2	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^    def top2(self):$/;"	m	language:Python	class:Linked_list
+video_to_frames	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^def video_to_frames(path):$/;"	f	language:Python
+video_to_knnFrames	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^def video_to_knnFrames(path):$/;"	f	language:Python
+__init__	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^    def __init__(self):$/;"	m	language:Python	class:Linked_list
+__init__	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/slope_intercept/slope_intersect.py	/^    def __init__(self, data):$/;"	m	language:Python	class:Node
