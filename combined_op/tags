@@ -8,6 +8,7 @@ delete_front	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combin
 delete_front	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_3.py	/^    def delete_front(self):$/;"	m	language:Python	class:Linked_list
 destruct_list	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_2.py	/^    def destruct_list(self):$/;"	m	language:Python	class:Linked_list
 destruct_list	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_3.py	/^    def destruct_list(self):$/;"	m	language:Python	class:Linked_list
+draw_hough_lines	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_3.py	/^def draw_hough_lines(bgi, rho, theta, r, g, b):$/;"	f	language:Python
 expected_collisions	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_2.py	/^expected_collisions = 0$/;"	v	language:Python
 expected_collisions	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_3.py	/^expected_collisions = 0$/;"	v	language:Python
 frames_size	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_1.py	/^    frames_size = video_to_frames(path)  # in cwd, creates a "frames" directory and saves ith frame as "framei.jpg"$/;"	v	language:Python
@@ -16,6 +17,7 @@ frames_size	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combine
 frame_i_path	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_1.py	/^        frame_i_path = os.getcwd() + "\/frames\/frame" + str(i) + ".jpg" # path to ith simple frame $/;"	v	language:Python
 frame_i_path	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_2.py	/^        frame_i_path = os.getcwd() + "\/frames\/frame" + str(i) + ".jpg" # path to ith simple frame $/;"	v	language:Python
 frame_i_path	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_3.py	/^        frame_i_path = os.getcwd() + "\/frames\/frame" + str(i) + ".jpg" # path to ith simple frame $/;"	v	language:Python
+get_avg_line	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_3.py	/^def get_avg_line(lines, dominator):$/;"	f	language:Python
 get_delta	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_2.py	/^    def get_delta(self):$/;"	m	language:Python	class:Linked_list
 get_delta	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_3.py	/^    def get_delta(self):$/;"	m	language:Python	class:Linked_list
 get_median	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_2.py	/^    def get_median(self):$/;"	m	language:Python	class:Linked_list
@@ -73,8 +75,8 @@ pre_canny	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_
 push	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_3.py	/^    def push(self, item):$/;"	m	language:Python	class:MyHeap
 push_back	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_2.py	/^    def push_back(self, node):$/;"	m	language:Python	class:Linked_list
 push_back	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_3.py	/^    def push_back(self, node):$/;"	m	language:Python	class:Linked_list
-rho_lower_bound	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_3.py	/^rho_lower_bound = 9$/;"	v	language:Python
-rho_upper_bound	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_3.py	/^rho_upper_bound = 22$/;"	v	language:Python
+rho_lower_bound	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_3.py	/^rho_lower_bound = 50$/;"	v	language:Python
+rho_upper_bound	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_3.py	/^rho_upper_bound = 56$/;"	v	language:Python
 size	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_3.py	/^    def size(self):$/;"	m	language:Python	class:MyHeap
 store_img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_1.py	/^def store_img(img, image_name, dir_name):$/;"	f	language:Python
 store_img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/combined_op/video_to_houghLineFrames_2.py	/^def store_img(img, image_name, dir_name):$/;"	f	language:Python

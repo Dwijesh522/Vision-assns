@@ -1,12 +1,13 @@
 ##--------------------------------------------------------------------------------------------------------
 ##-----------   addressing the problem: ------------------------------------------------------------------
-#-------------------------------------  One sided lines --------------------------------------------------
-#--------------------------------------------------------------------------------------------------------
+#-------------------------------------  One sided lines, efficiently choose medial axis  -----------------
+#---------------------------------------------------------------------------------------------------------
 import numpy as np
 import cv2
 import os
 import math
 import heapq
+import random
 
 class Node:
     def __init__(self, data):
@@ -64,12 +65,9 @@ class Linked_list:
             if(temp <0):
                 temp *= -1
             self.delta += temp
-
             self.last.next = node
             self.last = self.last.next
-
             self.size += 1
-            
             if(self.size % 2 == 1):
                 self.median = self.median.next
     def top1(self):
@@ -92,7 +90,6 @@ class Linked_list:
             if(temp < 0):
                 temp *= -1
             self.delta -= temp
-
             self.first = self.first.next
             if(self.size %2 == 0):
                 self.median = self.median.next
@@ -113,8 +110,8 @@ is_dynamic = True       # threshold has not been approximated
 expected_collisions = 0
 counter = 0
 post_chunk_size = chunk_size*2
-rho_lower_bound = 9
-rho_upper_bound = 22
+rho_lower_bound = 50
+rho_upper_bound = 56
 tuple_lines_upper_bound = 30
 
 def number_of_ones(img):
@@ -215,6 +212,38 @@ def check_two_sides(one, two, three=None):
     
     return -1
 
+def draw_hough_lines(bgi, rho, theta, r, g, b):
+    print("rho, theta: " + str(rho) + ", " + str(theta))
+    a = np.cos(theta)
+    b = np.sin(theta)
+    x0 = a*rho
+    y0 = b*rho
+    x1 = int(x0 + 1000*(-b))
+    y1 = int(y0 + 1000*(a))
+    x2 = int(x0 - 1000*(-b))
+    y2 = int(y0 - 1000*(a))
+    cv2.line(bgi, (math.ceil(x1), math.ceil(y1) ), ( math.ceil(x2), math.ceil(y2)), (int(b),int(g), int(r)), 2)
+
+def get_avg_line(lines, dominator):
+    rho_avg, theta_avg = (0, 0)
+    if(dominator == 1):
+        counter = 0
+        number_of_lines = len(lines)
+        while(counter < number_of_lines):
+            (rho, theta) = (lines[counter].rho, lines[counter].theta)
+            if(rho > 0):
+                (rho_avg, theta_avg) = (rho_avg+rho, theta_avg+theta)
+            counter += 1
+    else:
+        counter = 0
+        number_of_lines = len(lines)
+        while(counter < number_of_lines):
+            (rho, theta) = (lines[counter].rho, lines[counter].theta)
+            if(rho <= 0):
+                (rho_avg, theta_avg) = (rho_avg+rho, theta_avg+theta)
+            counter += 1
+    return (rho_avg, theta_avg)
+
 def hough_lines(img, bgr, img_path, collisions): 
     global tuple_lines_upper_bound
     lines = []
@@ -234,9 +263,9 @@ def hough_lines(img, bgr, img_path, collisions):
                 counter += 1
         # heap of lines is ready. Ordered by theta of lines
         number_of_tuple_lines = 0
-        rho_avg = 0
-        theta_avg = 0
         is_possible = False
+        parallel_lines = []
+        negative_signs = 0
         while(lines_heap.size() >= 3 and number_of_tuple_lines <= tuple_lines_upper_bound):
             min_three = lines_heap.nsmallest(3)
             one = min_three[0][1]
@@ -248,19 +277,36 @@ def hough_lines(img, bgr, img_path, collisions):
             elif(selected_line == 2):
                 number_of_tuple_lines += 1
                 is_possible = True
-                rho_avg += (one.rho + two.rho)/2
-                theta_avg += (one.theta + two.theta)/2
+                temp = Line((one.rho + two.rho)/2,  (one.theta + two.theta)/2)
+                parallel_lines.append(temp)
+                if(one.rho < 0 and two.rho < 0):
+                    negative_signs += 1
+
                 lines_heap.pop()
                 lines_heap.pop()
+                r = random.randint(0, 255)
+                g = random.randint(0, 255)
+                b = random.randint(0, 255)
+                draw_hough_lines(bgr, one.rho, one.theta, r, g, b)
+                draw_hough_lines(bgr, two.rho, two.theta, r, g, b)
             else:
                 number_of_tuple_lines += 1
                 is_possible = True
-                rho_avg += (one.rho + three.rho)/2
-                theta_avg += (one.theta + three.theta)/2
+                temp = Line((one.rho + three.rho)/2, (one.theta + three.theta)/2)
+                parallel_lines.append(temp)
+                if(one.rho < 0 and three.rho < 0):
+                    negative_signs += 1
                 lines_heap.pop()
                 temp = (lines_heap.pop())[1]
                 lines_heap.pop()
                 lines_heap.push(temp)
+
+                r = random.randint(0, 255)
+                g = random.randint(0, 255)
+                b = random.randint(0, 255)
+                draw_hough_lines(bgr, one.rho, one.theta, r, g, b)
+                draw_hough_lines(bgr, three.rho, three.theta, r, g, b)
+
         if(lines_heap.size() == 2 and number_of_tuple_lines <= tuple_lines_upper_bound):
             min_two = lines_heap.nsmallest(2)
             one = min_two[0][1]
@@ -269,21 +315,27 @@ def hough_lines(img, bgr, img_path, collisions):
             if(selected_line == 2):
                 number_of_tuple_lines += 1
                 is_possible = True
-                rho_avg += (one.rho + two.rho)/2
-                theta_avg += (one.theta + two.theta)/2
+                temp = Line((one.rho + two.rho)/2, (one.theta + two.theta)/2)
+                parallel_lines.append(temp)
+                if(one.rho <0 and two.rho<0):
+                    negative_signs += 1
+
+                r = random.randint(0, 255)
+                g = random.randint(0, 255)
+                b = random.randint(0, 255)
+                draw_hough_lines(bgr, one.rho, one.theta, r, g, b)
+                draw_hough_lines(bgr, two.rho, two.theta, r, g, b)
+
         if(is_possible):
+            positive_signs = number_of_tuple_lines - negative_signs
+            if(negative_signs >= positive_signs):
+                rho_avg, theta_avg = get_avg_line(parallel_lines, -1)
+                (rho_avg, theta_avg) = (rho_avg/negative_signs, theta_avg/negative_signs)
+            else:
+                rho_avg, theta_avg = get_avg_line(parallel_lines, 1)
+                (rho_avg, theta_avg) = (rho_avg/positive_signs, theta_avg/positive_signs)
             print("number of touple lines: " + str(number_of_tuple_lines))
-            rho_avg /= number_of_tuple_lines
-            theta_avg /= number_of_tuple_lines
-            a = np.cos(theta_avg)
-            b = np.sin(theta_avg)
-            x0 = a*rho_avg
-            y0 = b*rho_avg
-            x1 = int(x0 + 1000*(-b))
-            y1 = int(y0 + 1000*(a))
-            x2 = int(x0 - 1000*(-b))
-            y2 = int(y0 - 1000*(a))
-            cv2.line(bgr, (math.ceil(x1), math.ceil(y1) ), ( math.ceil(x2), math.ceil(y2)), (0, 0, 255), 2)
+            draw_hough_lines(bgr, rho_avg, theta_avg, 255, 0, 0)
     return bgr
 
 def store_img(img, image_name, dir_name):

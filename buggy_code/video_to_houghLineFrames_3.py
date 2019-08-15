@@ -1,16 +1,51 @@
 ##--------------------------------------------------------------------------------------------------------
 ##-----------   addressing the problem: ------------------------------------------------------------------
-#-------------------------------------  Smaller part seen vs Larger part seen for the rod-----------------
+#-------------------------------------  One sided lines --------------------------------------------------
 #--------------------------------------------------------------------------------------------------------
 import numpy as np
 import cv2
 import os
 import math
+import heapq
 
 class Node:
-    def __init__(self, data):
+    def __init__(self, data, theta = None):
         self.data = data
+        self.theta = 0
         self.next = None
+    def add_theta(theta):
+        self.theta = theta
+
+class Line:
+    def __init__(self, rho, theta):
+        self.rho = rho
+        self.theta = theta
+    def __lt__(self, other):
+        return self.theta < other.theta
+    def get_rho(self):
+        return self.rho
+    def get_theta(self):
+        return self.theta
+
+def get_val(line):
+    return line.get_theta()
+
+class MyHeap(object):
+    def __init__(self, initial=None, key=None):
+        self.key = key
+        if initial:
+            self._data = [(self.key(item), item) for item in initial]
+            heapq.heapify(self._data)
+        else:
+            self._data = []
+    def push(self, item):
+        heapq.heappush(self._data, (self.key(item), item))
+    def pop(self):
+        return heapq.heappop(self._data)
+    def nsmallest(self, x):
+        return heapq.nsmallest(x, self._data)
+    def size(self):
+        return len(self._data)
 
 # first in first out
 class Linked_list:          
@@ -74,13 +109,18 @@ class Linked_list:
         self.last = None
         self.first = None
         self.median = None
-
+    def add_theta_to_last(self, theta):
+        self.last.theta = theta
 past_thresholds = Linked_list()
 chunk_size = 3
 is_dynamic = True       # threshold has not been approximated
 expected_collisions = 0
 counter = 0
 post_chunk_size = chunk_size*2
+rho_lower_bound = 9
+rho_upper_bound = 22
+tuple_lines_upper_bound = 30
+theta_upper_bound = 0.05
 
 def number_of_ones(img):
     height, width = img.shape
@@ -162,7 +202,26 @@ def post_canny(img):
     #cv2.imwrite("dilate.jpg", img)
     return img
 
-def hough_lines(img, bgr, img_path, collisions): 
+def check_two_sides(one, two, three=None):
+    global rho_lower_bound, rho_upper_bound
+
+    two_one = two.rho - one.rho
+    if(two_one < 0):
+        two_one *= -1
+    if(two_one <= rho_upper_bound) and (two_one >= rho_lower_bound):
+        return 2
+
+    if not three is None:
+        three_one = three.rho - one.rho
+        if(three_one < 0):
+            three_one *= -1
+        if(three_one <= rho_upper_bound) and (three_one >= rho_lower_bound):
+            return 3
+    
+    return -1
+
+def hough_lines(img, bgr, img_path, collisions, is_dynamic):
+    global tuple_lines_upper_bound, past_thresholds
     lines = []
     lines = cv2.HoughLines(img,1,np.pi/360,collisions)
     if not lines is None:
@@ -170,29 +229,73 @@ def hough_lines(img, bgr, img_path, collisions):
     else:
         print(img_path, " has number of lines: 0")
     if not lines is None:
-        x1_avg = 0
-        y1_avg = 0
-        x2_avg = 0
-        y2_avg = 0
         counter = 0
         lines_len = len(lines)
+        lines_heap = MyHeap(key=get_val)
         while(counter != lines_len):
             for rho,theta in lines[counter]:
-                a = np.cos(theta)
-                b = np.sin(theta)
-                x0 = a*rho
-                y0 = b*rho
-                x1 = int(x0 + 1000*(-b))
-                y1 = int(y0 + 1000*(a))
-                x2 = int(x0 - 1000*(-b))
-                y2 = int(y0 - 1000*(a))
-                # cv2.line(img2, (x1,y1),(x2,y2),(255,255,255),2)
-                x1_avg += x1
-                y1_avg += y1
-                x2_avg += x2
-                y2_avg += y2
+                temp = Line(rho, theta)
+                if( is_dynamic):
+                    lines_heap.push(temp)
+                elif( abs(past_thresholds.median.theta - theta) <= 0.05):
+                    lines_heap.push(temp)
                 counter += 1
-        cv2.line(bgr, (math.ceil(x1_avg/lines_len), math.ceil(y1_avg/lines_len) ), ( math.ceil(x2_avg/lines_len), math.ceil(y2_avg/lines_len)), (0, 0, 255), 2)
+        # heap of lines is ready. Ordered by theta of lines
+        number_of_tuple_lines = 0
+        rho_avg = 0
+        theta_avg = 0
+        is_possible = False
+        while(lines_heap.size() >= 3 and number_of_tuple_lines <= tuple_lines_upper_bound):
+            min_three = lines_heap.nsmallest(3)
+            one = min_three[0][1]
+            two = min_three[1][1]
+            three = min_three[2][1]
+            selected_line = check_two_sides(one, two, three)
+            if(selected_line == -1):
+                lines_heap.pop()
+            elif(selected_line == 2):
+                number_of_tuple_lines += 1
+                is_possible = True
+                rho_avg += (one.rho + two.rho)/2
+                theta_avg += (one.theta + two.theta)/2
+                lines_heap.pop()
+                lines_heap.pop()
+            else:
+                number_of_tuple_lines += 1
+                is_possible = True
+                rho_avg += (one.rho + three.rho)/2
+                theta_avg += (one.theta + three.theta)/2
+                lines_heap.pop()
+                temp = (lines_heap.pop())[1]
+                lines_heap.pop()
+                lines_heap.push(temp)
+        if(lines_heap.size() == 2 and number_of_tuple_lines <= tuple_lines_upper_bound):
+            min_two = lines_heap.nsmallest(2)
+            one = min_two[0][1]
+            two = min_two[1][1]
+            selected_line = check_two_sides(one, two)
+            if(selected_line == 2):
+                number_of_tuple_lines += 1
+                is_possible = True
+                rho_avg += (one.rho + two.rho)/2
+                theta_avg += (one.theta + two.theta)/2
+        if(is_possible):
+            print("number of touple lines: " + str(number_of_tuple_lines))
+            rho_avg /= number_of_tuple_lines
+            theta_avg /= number_of_tuple_lines
+
+            if(is_dynamic):
+                past_thresholds.add_theta_to_last(theta_avg)
+
+            a = np.cos(theta_avg)
+            b = np.sin(theta_avg)
+            x0 = a*rho_avg
+            y0 = b*rho_avg
+            x1 = int(x0 + 1000*(-b))
+            y1 = int(y0 + 1000*(a))
+            x2 = int(x0 - 1000*(-b))
+            y2 = int(y0 - 1000*(a))
+            cv2.line(bgr, (math.ceil(x1), math.ceil(y1) ), ( math.ceil(x2), math.ceil(y2)), (0, 0, 255), 2)
     return bgr
 
 def store_img(img, image_name, dir_name):
@@ -219,17 +322,17 @@ def knn_to_hough_frame(path, background_img_path, outImg_name):
     if(is_dynamic):
         if(ll_len < chunk_size):
             ones = number_of_ones(img)
-            collisions = math.ceil(ones/23)
+            collisions = math.ceil(ones/30)
             node = Node(collisions)
             past_thresholds.push_back(node)
             if(ll_len+1 == chunk_size) and (past_thresholds.get_delta() <= 2*chunk_size):
                 expected_collisions = past_thresholds.get_median()
                 is_dynamic = False
                 counter = 1
-            bgr = hough_lines(img, bgr, path, collisions)
+            bgr = hough_lines(img, bgr, path, collisions, True)
         else:
             ones = number_of_ones(img)
-            collisions = math.ceil(ones/23)
+            collisions = math.ceil(ones/30)
             node = Node(collisions)
             past_thresholds.push_back(node)
             past_thresholds.delete_front()
@@ -237,13 +340,13 @@ def knn_to_hough_frame(path, background_img_path, outImg_name):
                 expected_collisions = past_thresholds.get_median()
                 is_dynamic = False
                 counter = 1
-            bgr = hough_lines(img, bgr, path, collisions)
+            bgr = hough_lines(img, bgr, path, collisions, True)
     else:
         if(counter < post_chunk_size):
-            bgr = hough_lines(img, bgr, path, expected_collisions)
+            bgr = hough_lines(img, bgr, path, expected_collisions, False)
             counter += 1
         else:
-            bgr = hough_lines(img, bgr, path, expected_collisions)
+            bgr = hough_lines(img, bgr, path, expected_collisions, False)
             past_thresholds.destruct_list()
             is_dynamic = True
 
