@@ -6,10 +6,11 @@ counter	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op
 img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^img = cv2.Canny(img,800,1200, apertureSize = 3)$/;"	v	language:Python
 img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^img = cv2.imread(path,0)$/;"	v	language:Python
 img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^img = np.uint8(img)$/;"	v	language:Python
+img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^img = post_canny(img)$/;"	v	language:Python
 img	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^img = pre_canny(img)$/;"	v	language:Python
 lines	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^lines = cv2.HoughLines(img,5,np.pi\/360,320)$/;"	v	language:Python
 lines	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^lines = []$/;"	v	language:Python
-path	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^path = input("path to image(including image name): ")$/;"	v	language:Python
+path	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^path = input("path to knn frame(including image name): ")$/;"	v	language:Python
 path2	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^path2 = path$/;"	v	language:Python
 post_canny	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^def post_canny(img):$/;"	f	language:Python
 pre_canny	/home/dwijesh/Documents/sem5/vision/assns/assn1/Vision-assns/separate_op/edge_det/hough_lines_1/houghLines_1.py	/^def pre_canny(img): $/;"	f	language:Python
