@@ -150,7 +150,8 @@ class stochastic_list:
     def learned_val(self):
         return self.head.data
 
-
+img2 = 0
+knnFrame_i_path = ""
 past_thresholds = Linked_list()
 chunk_size = 3
 is_dynamic = True                               # threshold has not been approximated
@@ -164,6 +165,16 @@ min_number_of_parallel_lines = 3
 threshold_jump = 10
 come_out_infinite_loop = 200
 ones_lower_bound = 800
+y_length = 0
+check_ahead = True
+does_one_exist = False
+current_ind = 1000000000
+prev_ind = 1000000000
+prev_length = 0
+ones = 0
+collisions = 0
+prev_ones = 0
+length_prev = 1000
 
 default_learned_theta = 2.825978914896647
 forward_threshold = 0.003
@@ -178,9 +189,43 @@ def number_of_ones(img):
     counter = 0
     for y in range(0, math.ceil(3*height/4)):
         for x in range(0, width):
-            if(img[y, x] > 127):
+            if(img[y, x] > 245):
                 counter += 1
     return counter
+
+def get_length_of_line(theta_avg):
+    global check_ahead, does_one_exist, prev_ind, current_ind, knnFrame_i_path,img2
+    img = cv2.imread(knnFrame_i_path,0)
+    img1 = img2
+    height, width = img.shape
+    counter = 0
+    y_length = 0
+    for y in range(0, math.ceil(3*height/4)):
+        if(counter == 0):
+            for x in range(0, width):
+                if(img[y, x] > 127):
+                    counter += 1
+                    current_ind = x
+                    y_length += 1
+                    break
+        else:
+            if(check_ahead):
+                for x in range(min(0,round(float(prev_ind) - (200*math.tan(math.radians(theta_avg))))), round(float(prev_ind) + (200*math.tan(math.radians(theta_avg))))):
+                    if(img[y,x] > 127):
+                        current_ind = x
+                        does_one_exist = True
+                        break
+                if(not does_one_exist):
+                    check_ahead = False
+                else:
+                    y_length += 1
+        prev_ind = current_ind
+        does_one_exist = False
+    check_ahead = True
+    does_one_exist = False
+    prev_ind = 1000000000
+    current_ind = prev_ind
+    return y_length    
 
 def video_to_frames(path):
     dirname = "frames"
@@ -271,15 +316,33 @@ def check_two_sides(one, two, three=None):
     
     return -1
 
-def draw_hough_lines(bgi, rho, theta, r, g, b):
+def draw_hough_lines(bgi, rho, theta,length, r, g, b):
+    global ones, collisions, knnFrame_i_path, length_prev, prev_ones, img2
+
+    print("collisions: ", collisions)
     a = np.cos(theta)
     b = np.sin(theta)
-    x0 = a*rho
-    y0 = b*rho
+    x0 = a * rho
+    y0 = b * rho
+    #if(rho > 0):
+    #    x1 = x0 + (length *(b/a))
+    #    y1 = length
+    #else:
+    #    x1 = x0 - (length * (b/a))
+    #    y1 = length
+    diff = ones - prev_ones
+    if(diff > 0):
+        length = length_prev * (1 + (1/math.exp((diff%23))))
+    elif(diff < 0):
+        length = length_prev * (math.exp((abs(diff)%23))/(1+ math.exp((abs(diff)%23))))
+    else:
+        length = length_prev * (math.exp(23)/(1+ math.exp(23)))
+    length_prev = length
+
     x1 = int(x0 + 1000*(-b))
     y1 = int(y0 + 1000*(a))
-    x2 = int(x0 - 1000*(-b))
-    y2 = int(y0 - 1000*(a))
+    x2 = int(x0 - (length)*(-b))
+    y2 = int(y0 - (length)*(a))
     cv2.line(bgi, (math.ceil(x1), math.ceil(y1) ), ( math.ceil(x2), math.ceil(y2)), (int(b),int(g), int(r)), 2)
 
 def get_avg_line(lines, neg, pos):
@@ -302,17 +365,19 @@ def get_avg_line(lines, neg, pos):
             good_lines += 1
         else:
             if(rho<0):
-                (unc_rho_avg, unc_theta_avg) = (unc_rho_avg+ (rho), unc_theta_avg+ ( (neg/(neg+pos)) *theta))
+                (unc_rho_avg, unc_theta_avg) = (unc_rho_avg+ abs(rho), unc_theta_avg+ ( (neg/(neg+pos)) *theta))
             else:
-                (unc_rho_avg, unc_theta_avg) = (unc_rho_avg+ (rho), unc_theta_avg+ ( (pos/(neg+pos)) *theta))
+                (unc_rho_avg, unc_theta_avg) = (unc_rho_avg+ abs(rho), unc_theta_avg+ ( (pos/(neg+pos)) *theta))
         counter += 1
-
-    if(good_lines == 0):
-        good_lines = 1
+    if (good_lines == 0):
+        lines.sort(key = get_val)
+        (rho_avg, theta_avg) = (unc_rho_avg, lines[round(number_of_lines/2)].theta)
+    if(more_neg):
+        unc_rho_avg *= -1
     return (rho_avg, theta_avg, good_lines, unc_rho_avg, unc_theta_avg)
 
-def hough_lines(img, bgr, img_path, collisions): 
-    global tuple_lines_upper_bound, threshold_jump, come_out_infinite_loop, st_list, lines_upper_bound
+def hough_lines(img, bgr, img_path): 
+    global tuple_lines_upper_bound, threshold_jump, come_out_infinite_loop, st_list, lines_upper_bound, collisions
     get_enough_lines = False
     iteration_count = 0
     while(not get_enough_lines and iteration_count <= come_out_infinite_loop):
@@ -365,8 +430,8 @@ def hough_lines(img, bgr, img_path, collisions):
                     r = random.randint(0, 255)
                     g = random.randint(0, 255)
                     b = random.randint(0, 255)
-                    draw_hough_lines(bgr, one.rho, one.theta, r, g, b)
-                    draw_hough_lines(bgr, two.rho, two.theta, r, g, b)
+#                    draw_hough_lines(bgr, one.rho, one.theta, r, g, b)
+#                    draw_hough_lines(bgr, two.rho, two.theta, r, g, b)
                 else:
                     one_three_rho = (one.rho + three.rho)/2
                     one_three_theta = (one.theta + three.theta)/2
@@ -384,8 +449,8 @@ def hough_lines(img, bgr, img_path, collisions):
                     r = random.randint(0, 255)
                     g = random.randint(0, 255)
                     b = random.randint(0, 255)
-                    draw_hough_lines(bgr, one.rho, one.theta, r, g, b)
-                    draw_hough_lines(bgr, three.rho, three.theta, r, g, b)
+#                    draw_hough_lines(bgr, one.rho, one.theta, r, g, b)
+#                    draw_hough_lines(bgr, three.rho, three.theta, r, g, b)
             if(lines_heap.size() == 2 and number_of_tuple_lines <= tuple_lines_upper_bound):
                 min_two = lines_heap.nsmallest(2)
                 one = min_two[0][1]
@@ -404,8 +469,8 @@ def hough_lines(img, bgr, img_path, collisions):
                     r = random.randint(0, 255)
                     g = random.randint(0, 255)
                     b = random.randint(0, 255)
-                    draw_hough_lines(bgr, one.rho, one.theta, r, g, b)
-                    draw_hough_lines(bgr, two.rho, two.theta, r, g, b)
+#                    draw_hough_lines(bgr, one.rho, one.theta, r, g, b)
+#                    draw_hough_lines(bgr, two.rho, two.theta, r, g, b)
 
             iteration_count += 1
             if(number_of_tuple_lines < min_number_of_parallel_lines):
@@ -424,14 +489,20 @@ def hough_lines(img, bgr, img_path, collisions):
 #                    rho_avg, theta_avg = get_avg_line(parallel_lines, 1)
 #                    (rho_avg, theta_avg) = (rho_avg/positive_signs, theta_avg/positive_signs)
                 rho_avg, theta_avg, good_lines, unc_rho_avg, unc_theta_avg = get_avg_line(parallel_lines, negative_signs, positive_signs)
-                (rho_avg, theta_avg) = (rho_avg/good_lines, theta_avg/good_lines)
-                if(not theta_avg == 0):
+                
+                if(not good_lines == 0):
+                    (rho_avg, theta_avg) = (rho_avg/good_lines, theta_avg/good_lines)
                     st_list.check(theta_avg)
                 else:
-                    st_list.check(unc_theta_avg/number_of_tuple_lines)
+                    rho_avg = rho_avg/number_of_tuple_lines
+                    theta_avg = theta_avg
+                    st_list.check(theta_avg)
                 print("rho, theta: ", rho_avg, theta_avg)                    
                 print("number of touple lines: " + str(number_of_tuple_lines))
-                draw_hough_lines(bgr, rho_avg, theta_avg, 255, 0, 0)
+                #length = get_length_of_line(theta_avg)
+                
+                #print("Length of lIne is: " + str(length))
+                draw_hough_lines(bgr, rho_avg, theta_avg,0, 255, 0, 0)
     return bgr
 
 def store_img(img, image_name, dir_name):
@@ -445,12 +516,13 @@ def store_img(img, image_name, dir_name):
 
 deleteThis_counter = 0                              #++++++++++++++++++++++++++++++++
 def knn_to_hough_frame(path, background_img_path, outImg_name):
-    global past_thresholds, chunk_size, is_dynamic, expected_collisions, counter, post_chunk_size, deleteThis_counter, ones_lower_bound
+    global past_thresholds, chunk_size, is_dynamic, expected_collisions, counter, post_chunk_size, deleteThis_counter, ones_lower_bound, img2, ones, collisions
 
     deleteThis_counter += 1                         #++++++++++++++++++++++++++++++++++
     img = cv2.imread(path,0)
     img = pre_canny(img)
     img = cv2.Canny(img,800,1200, apertureSize = 3)
+    img2 = img
 #    img = post_canny(img)
     path2 = background_img_path
     bgr = cv2.imread(path2,1)
@@ -472,7 +544,7 @@ def knn_to_hough_frame(path, background_img_path, outImg_name):
                 is_dynamic = False
                 counter = 1
             store_img(img, "frame"+str(deleteThis_counter)+".jpg", "input_hough_frames")
-            bgr = hough_lines(img, bgr, path, collisions)
+            bgr = hough_lines(img, bgr, path)
         else:
             ones = number_of_ones(img)
             if(ones < ones_lower_bound):
@@ -484,19 +556,19 @@ def knn_to_hough_frame(path, background_img_path, outImg_name):
             past_thresholds.push_back(node)
             past_thresholds.delete_front()
             if(past_thresholds.get_delta() <= 2*chunk_size):
-                expected_collisions = past_thresholds.get_median()
+                collisions = past_thresholds.get_median()
                 is_dynamic = False
                 counter = 1
             store_img(img, "frame"+str(deleteThis_counter)+".jpg", "input_hough_frames")
-            bgr = hough_lines(img, bgr, path, collisions)
+            bgr = hough_lines(img, bgr, path)
     else:
         if(counter < post_chunk_size):
             store_img(img, "frame"+str(deleteThis_counter)+".jpg", "input_hough_frames")
-            bgr = hough_lines(img, bgr, path, expected_collisions)
+            bgr = hough_lines(img, bgr, path)
             counter += 1
         else:
             store_img(img, "frame"+str(deleteThis_counter)+".jpg", "input_hough_frames")
-            bgr = hough_lines(img, bgr, path, expected_collisions)
+            bgr = hough_lines(img, bgr, path)
             past_thresholds.destruct_list()
             is_dynamic = True
 
@@ -509,7 +581,7 @@ if __name__ == '__main__':
     frames_size = video_to_frames(path)  # in cwd, creates a "frames" directory and saves ith frame as "framei.jpg"
     knnFrames_size = video_to_knnFrames(path) # in cwd, creates a "knn_frames" directory and saves ith knn frame as "framei.jpg"
 
-#    knnFrames_size = 463
+   # knnFrames_size = 463
     i = 1
     while(i <= knnFrames_size):
         knnFrame_i_path = os.getcwd() + "/knn_frames/frame" + str(i) + ".jpg" # path to ith knn frame
@@ -518,5 +590,6 @@ if __name__ == '__main__':
         print("*****************************************************************************************************************************")
         print("frame" + str(i))
         knn_to_hough_frame(knnFrame_i_path,  frame_i_path, outImg_name) #in cwd, creates "hough_frames" directory and saves ith hough frame as "framei.jpg"
+        prev_ones = ones
         i += 1
     print("*****************************************************************************************************************************")
