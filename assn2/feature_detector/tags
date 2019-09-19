@@ -1,9 +1,5 @@
 !_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
-gray	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/hessian_key_point_detection.py	/^gray= cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)$/;"	v	language:Python
-img	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/hessian_key_point_detection.py	/^img = cv2.imread("\/home\/dwijesh\/Documents\/sem5\/vision\/assns\/Vision-assns\/assn2\/images\/feature_detection.jpg");$/;"	v	language:Python
-img	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/hessian_key_point_detection.py	/^img=cv2.drawKeypoints(gray,kp)$/;"	v	language:Python
-img	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/hessian_key_point_detection.py	/^img=cv2.drawKeypoints(gray,kp,flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)$/;"	v	language:Python
-kp	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/hessian_key_point_detection.py	/^kp = sift.detect(gray,None)$/;"	v	language:Python
-main	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/hessian_key_point_detection.cpp	/^	int main()$/;"	f	language:C++
-main	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/hessian_key_point_detection.cpp	/^	int main(int argc, char* argv[])$/;"	f	language:C++
-sift	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/hessian_key_point_detection.py	/^sift = cv2.SIFT()$/;"	v	language:Python
+get_key_points	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^vector<vector<KeyPoint>> get_key_points(string folder_path)$/;"	f	language:C++
+main	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^int main(int argc, char* argv[])$/;"	f	language:C++
+store_image	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^void store_image(Mat img, string img_name)$/;"	f	language:C++
+surf	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^vector<KeyPoint> surf(Mat src_img, int hessian_threshold)$/;"	f	language:C++
