@@ -1,5 +1,13 @@
 !_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
-get_key_points	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^vector<vector<KeyPoint>> get_key_points(string folder_path)$/;"	f	language:C++
+detector_type	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^enum detector_type { SURF_DETECTOR, ORB_DETECTOR};$/;"	g	language:C++	file:
+get_desc_kpoint_image	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^pair< vector<Mat>, pair< vector<Mat>, vector<vector<KeyPoint>>> > get_desc_kpoint_image(string folder_path, detector_type detector)$/;"	f	language:C++
+get_matching_points	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^pair<vector<Point2f>, vector<Point2f>> get_matching_points(	Mat &img1, Mat &img2, Mat &descriptor1, Mat &descriptor2, $/;"	f	language:C++
+good_match_percent	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^const float good_match_percent = 0.05f;$/;"	v	language:C++
 main	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^int main(int argc, char* argv[])$/;"	f	language:C++
+orb	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^pair<Mat, vector<KeyPoint>> orb(Mat src_image, int frame_id)$/;"	f	language:C++
+ORB_DETECTOR	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^enum detector_type { SURF_DETECTOR, ORB_DETECTOR};$/;"	e	language:C++	enum:detector_type	file:
+orb_threshold	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^const int orb_threshold = 15000;$/;"	v	language:C++
 store_image	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^void store_image(Mat img, string img_name)$/;"	f	language:C++
-surf	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^vector<KeyPoint> surf(Mat src_img, int hessian_threshold)$/;"	f	language:C++
+surf	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^pair<Mat, vector<KeyPoint>> surf(Mat src_img, int frame_id)$/;"	f	language:C++
+SURF_DETECTOR	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^enum detector_type { SURF_DETECTOR, ORB_DETECTOR};$/;"	e	language:C++	enum:detector_type	file:
+surf_threshold	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^const int surf_threshold = 5000;$/;"	v	language:C++
