@@ -1,13 +1,45 @@
 !_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
-detector_type	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^enum detector_type { SURF_DETECTOR, ORB_DETECTOR};$/;"	g	language:C++	file:
-get_desc_kpoint_image	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^pair< vector<Mat>, pair< vector<Mat>, vector<vector<KeyPoint>>> > get_desc_kpoint_image(string folder_path, detector_type detector)$/;"	f	language:C++
-get_matching_points	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^pair<vector<Point2f>, vector<Point2f>> get_matching_points(	Mat &img1, Mat &img2, Mat &descriptor1, Mat &descriptor2, $/;"	f	language:C++
-good_match_percent	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^const float good_match_percent = 0.05f;$/;"	v	language:C++
-main	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^int main(int argc, char* argv[])$/;"	f	language:C++
-orb	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^pair<Mat, vector<KeyPoint>> orb(Mat src_image, int frame_id)$/;"	f	language:C++
-ORB_DETECTOR	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^enum detector_type { SURF_DETECTOR, ORB_DETECTOR};$/;"	e	language:C++	enum:detector_type	file:
-orb_threshold	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^const int orb_threshold = 15000;$/;"	v	language:C++
-store_image	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^void store_image(Mat img, string img_name)$/;"	f	language:C++
-surf	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^pair<Mat, vector<KeyPoint>> surf(Mat src_img, int frame_id)$/;"	f	language:C++
-SURF_DETECTOR	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^enum detector_type { SURF_DETECTOR, ORB_DETECTOR};$/;"	e	language:C++	enum:detector_type	file:
-surf_threshold	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/surf.cpp	/^const int surf_threshold = 5000;$/;"	v	language:C++
+detector_type	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^enum detector_type { SURF_DETECTOR, ORB_DETECTOR};$/;"	g	language:C++	file:
+detector_type	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^enum detector_type { SURF_DETECTOR, ORB_DETECTOR};$/;"	g	language:C++	file:
+get_desc_kpoint_image	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^pair< vector<Mat>, pair< vector<Mat>, vector<vector<KeyPoint>>> > get_desc_kpoint_image(string folder_path, detector_type detector)$/;"	f	language:C++
+get_desc_kpoint_image	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^pair< vector<Mat>, pair< vector<Mat>, vector<vector<KeyPoint>>> > get_desc_kpoint_image(string folder_path, detector_type detector)$/;"	f	language:C++
+get_matching_points	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^pair<vector<Point2f>, vector<Point2f>> get_matching_points(	Mat &img1, Mat &img2, Mat &descriptor1, Mat &descriptor2, $/;"	f	language:C++
+get_matching_points	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^pair<vector<Point2f>, vector<Point2f>> get_matching_points(	Mat &img1, Mat &img2, Mat &descriptor1, Mat &descriptor2, $/;"	f	language:C++
+get_pair_wise_homography_matrix	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^vector<vector< Mat >> get_pair_wise_homography_matrix(vector<vector< pair< vector<Point2f>, vector<Point2f>> >> &pair_wise_matching_points)$/;"	f	language:C++
+get_pair_wise_homography_matrix	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^vector<vector< Mat >> get_pair_wise_homography_matrix(vector<vector< pair< vector<Point2f>, vector<Point2f>> >> &pair_wise_matching_points)$/;"	f	language:C++
+get_pair_wise_matching_points	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^vector<vector< pair< vector<Point2f>, vector<Point2f>> >> get_pair_wise_matching_points(pair< vector<Mat>, pair< vector<Mat>, vector<vector<KeyPoint>>> > &all_mappings)$/;"	f	language:C++
+get_pair_wise_matching_points	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^vector<vector< pair< vector<Point2f>, vector<Point2f>> >> get_pair_wise_matching_points(pair< vector<Mat>, pair< vector<Mat>, vector<vector<KeyPoint>>> > &all_mappings)$/;"	f	language:C++
+good_match_percent	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^const float good_match_percent = 0.05f;$/;"	v	language:C++
+good_match_percent	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^const float good_match_percent = 0.05f;$/;"	v	language:C++
+height	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^int height = 0;$/;"	v	language:C++
+height	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^int height = 0;$/;"	v	language:C++
+main	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^int main(int argc, char* argv[])$/;"	f	language:C++
+main	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^int main(int argc, char* argv[])$/;"	f	language:C++
+orb	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^pair<Mat, vector<KeyPoint>> orb(Mat src_image, int frame_id)$/;"	f	language:C++
+orb	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^pair<Mat, vector<KeyPoint>> orb(Mat src_image, int frame_id)$/;"	f	language:C++
+ORB_DETECTOR	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^enum detector_type { SURF_DETECTOR, ORB_DETECTOR};$/;"	e	language:C++	enum:detector_type	file:
+ORB_DETECTOR	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^enum detector_type { SURF_DETECTOR, ORB_DETECTOR};$/;"	e	language:C++	enum:detector_type	file:
+orb_threshold	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^const int orb_threshold = 15000;$/;"	v	language:C++
+orb_threshold	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^const int orb_threshold = 15000;$/;"	v	language:C++
+persp_coor1	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^double persp_coor1 = INT_MAX;$/;"	v	language:C++
+persp_coor1	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^double persp_coor1 = INT_MAX;$/;"	v	language:C++
+persp_coor2	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^double persp_coor2 = INT_MAX;$/;"	v	language:C++
+persp_coor2	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^double persp_coor2 = INT_MAX;$/;"	v	language:C++
+score	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^double score(Mat hmatrix){$/;"	f	language:C++
+score	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^double score(Mat hmatrix){$/;"	f	language:C++
+scoring_condition1	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^bool scoring_condition1(Mat hmatrix){$/;"	f	language:C++
+scoring_condition1	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^bool scoring_condition1(Mat hmatrix){$/;"	f	language:C++
+scoring_condition2	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^double scoring_condition2(Mat hmatrix)$/;"	f	language:C++
+scoring_condition2	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^double scoring_condition2(Mat hmatrix)$/;"	f	language:C++
+sort_des	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^bool sort_des(const pair<double, pair<int, int>> &homography1, const pair<double, pair<int, int>> &homography2)$/;"	f	language:C++
+sort_des	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^bool sort_des(const pair<double, pair<int, int>> &homography1, const pair<double, pair<int, int>> &homography2)$/;"	f	language:C++
+store_image	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^void store_image(Mat img, string img_name)$/;"	f	language:C++
+store_image	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^void store_image(Mat img, string img_name)$/;"	f	language:C++
+surf	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^pair<Mat, vector<KeyPoint>> surf(Mat src_img, int frame_id)$/;"	f	language:C++
+surf	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^pair<Mat, vector<KeyPoint>> surf(Mat src_img, int frame_id)$/;"	f	language:C++
+SURF_DETECTOR	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^enum detector_type { SURF_DETECTOR, ORB_DETECTOR};$/;"	e	language:C++	enum:detector_type	file:
+SURF_DETECTOR	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^enum detector_type { SURF_DETECTOR, ORB_DETECTOR};$/;"	e	language:C++	enum:detector_type	file:
+surf_threshold	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^const int surf_threshold = 5000;$/;"	v	language:C++
+surf_threshold	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^const int surf_threshold = 5000;$/;"	v	language:C++
+width	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^int width = 0;$/;"	v	language:C++
+width	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^int width = 0;$/;"	v	language:C++

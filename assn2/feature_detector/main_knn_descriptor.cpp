@@ -64,7 +64,7 @@ pair<Mat, vector<KeyPoint>> orb(Mat src_image, int frame_id)
 	// writing the image
 	Mat marked_image;
 	drawKeypoints(src_image, src_key_points, marked_image);
-	store_image(marked_image, to_string(frame_id)+".jpg");
+	store_image(marked_image, to_string(frame_id)+"_knn.jpg");
 	
 	return make_pair(descriptor, src_key_points);
 }
@@ -116,28 +116,30 @@ pair<vector<Point2f>, vector<Point2f>> get_matching_points(	Mat &img1, Mat &img2
 								int &frame_id1, int &frame_id2)
 {
 	// matching the features
-	vector<DMatch> matches;
-	Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create("BruteForce-Hamming");
-	matcher->match(descriptor1, descriptor2, matches, Mat());
+	vector<vector<DMatch>> knn_matches;
+	Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
+	matcher->knnMatch(descriptor1, descriptor2, knn_matches, 2);
 	
-	// sorting the matches by their scores
-	sort(matches.begin(), matches.end());
+	// filtering matches with ratio test
+	const float ratio_threshold = 0.9f;
+	vector<DMatch> good_matches;
+	for(size_t i=0; i< knn_matches.size(); i++)
+		if(knn_matches[i][0].distance < ratio_threshold * knn_matches[i][1].distance)		good_matches.push_back(knn_matches[i][0]);
+		else if(knn_matches[i][1].distance < ratio_threshold * knn_matches[i][0].distance)	good_matches.push_back(knn_matches[i][1]);
 
-	// removing not so good mathces
-	const int num_of_good_matches = matches.size()*good_match_percent;	// use instead some scoring mechenism, like matche score above threshold are selected
-	matches.erase(matches.begin()+num_of_good_matches, matches.end());
+	// drawing matches
+	Mat img_matches;
+	drawMatches(img1, key_point1, img2, key_point2, good_matches, img_matches, Scalar::all(-1),  Scalar::all(-1), std::vector<char>(), DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS);
 
-	// drawing the top matches and storing it in current dir
-	Mat image_matches;
-	drawMatches(img1, key_point1, img2, key_point2, matches, image_matches);
-	store_image(image_matches, to_string(frame_id1)+"_"+to_string(frame_id2)+".jpg");
+	store_image(img_matches, to_string(frame_id1)+"_"+to_string(frame_id2)+"_knn.jpg");
 
 	// extracting the location of good matching points from two images
 	vector<Point2f> points1, points2;
+	int num_of_good_matches = good_matches.size();
 	for(int i=0; i<num_of_good_matches; i++)
 	{
-		points1.push_back( key_point1[ matches[i].queryIdx ].pt );
-		points2.push_back( key_point2[ matches[i].trainIdx ].pt );
+		points1.push_back( key_point1[ good_matches[i].queryIdx ].pt );
+		points2.push_back( key_point2[ good_matches[i].trainIdx ].pt );
 	}
 
 	return make_pair(points1, points2);
@@ -269,7 +271,7 @@ int main(int argc, char* argv[])
 		<< endl;
 	cin >> folder_path;
 	// getting image matrix, descriptors and key points for all images in given folder
-	pair< vector<Mat>, pair< vector<Mat>, vector<vector<KeyPoint>>> > all_mappings = get_desc_kpoint_image(folder_path, ORB_DETECTOR);
+	pair< vector<Mat>, pair< vector<Mat>, vector<vector<KeyPoint>>> > all_mappings = get_desc_kpoint_image(folder_path, SURF_DETECTOR);
 	height = (all_mappings.first[0]).rows;
 	width = (all_mappings.first[0]).cols;
 	int image_count = all_mappings.first.size();
@@ -294,10 +296,7 @@ int main(int argc, char* argv[])
 								good_homography_indices[i].second.first << " -> " << 
 								good_homography_indices[i].second.second << endl;
 	// selecting n-1 entries
-	//good_homography_indices.erase( good_homography_indices.begin()+image_count-1, good_homography_indices.end());
-	
-	// erasing elements having zero score.
-	// ------  code here  ----------
+	good_homography_indices.erase( good_homography_indices.begin()+image_count-1, good_homography_indices.end());
 
 	// printing n-1 sorted indices of homography
 	cout << "after erasing\n";
