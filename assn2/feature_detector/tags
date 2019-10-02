@@ -1,8 +1,17 @@
 !_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+alignment_type	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^enum alignment_type { HORIZONTAL, VERTICAL_FIRST, VERTICAL_SECOND, NONE};$/;"	g	language:C++	file:
+comp	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^bool comp(const pair<int,vector<int> > &p1, const pair<int,vector<int> >  &p2){$/;"	f	language:C++
+compute_rows	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^vector<vector<int> > compute_rows(vector<pair<int,int> > horiz, int max_img_ind){$/;"	f	language:C++
 detector_type	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^enum detector_type { SURF_DETECTOR, ORB_DETECTOR};$/;"	g	language:C++	file:
 detector_type	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^enum detector_type { SURF_DETECTOR, ORB_DETECTOR};$/;"	g	language:C++	file:
+equalize_hist	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^Mat equalize_hist(Mat img){$/;"	f	language:C++
+getElementInRow	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^pair<int,vector<int> > getElementInRow(int** arr, int ind, vector<int> path, int max_ind){$/;"	f	language:C++
+getOrdering	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^vector<vector<int> > getOrdering(vector<pair<int,int> > horiz, vector<pair<int,int> > vert, int img_max_ind){$/;"	f	language:C++
+get_alignment	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^alignment_type get_alignment(Mat h1, Mat h2)$/;"	f	language:C++
+get_colored_images	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^vector<Mat> get_colored_images(string folder_path)$/;"	f	language:C++
 get_desc_kpoint_image	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^pair< vector<Mat>, pair< vector<Mat>, vector<vector<KeyPoint>>> > get_desc_kpoint_image(string folder_path, detector_type detector)$/;"	f	language:C++
 get_desc_kpoint_image	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^pair< vector<Mat>, pair< vector<Mat>, vector<vector<KeyPoint>>> > get_desc_kpoint_image(string folder_path, detector_type detector)$/;"	f	language:C++
+get_homography	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^Mat get_homography(int r1, int c1, int r2, int c2, vector<vector<Mat>> &pair_wise_homography_matrix, vector<vector<int>> &ordered_rows)$/;"	f	language:C++
 get_matching_points	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^pair<vector<Point2f>, vector<Point2f>> get_matching_points(	Mat &img1, Mat &img2, Mat &descriptor1, Mat &descriptor2, $/;"	f	language:C++
 get_matching_points	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^pair<vector<Point2f>, vector<Point2f>> get_matching_points(	Mat &img1, Mat &img2, Mat &descriptor1, Mat &descriptor2, $/;"	f	language:C++
 get_pair_wise_homography_matrix	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^vector<vector< Mat >> get_pair_wise_homography_matrix(vector<vector< pair< vector<Point2f>, vector<Point2f>> >> &pair_wise_matching_points)$/;"	f	language:C++
@@ -13,8 +22,10 @@ good_match_percent	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/
 good_match_percent	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^const float good_match_percent = 0.05f;$/;"	v	language:C++
 height	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^int height = 0;$/;"	v	language:C++
 height	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^int height = 0;$/;"	v	language:C++
+HORIZONTAL	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^enum alignment_type { HORIZONTAL, VERTICAL_FIRST, VERTICAL_SECOND, NONE};$/;"	e	language:C++	enum:alignment_type	file:
 main	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^int main(int argc, char* argv[])$/;"	f	language:C++
 main	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^int main(int argc, char* argv[])$/;"	f	language:C++
+NONE	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^enum alignment_type { HORIZONTAL, VERTICAL_FIRST, VERTICAL_SECOND, NONE};$/;"	e	language:C++	enum:alignment_type	file:
 orb	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^pair<Mat, vector<KeyPoint>> orb(Mat src_image, int frame_id)$/;"	f	language:C++
 orb	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^pair<Mat, vector<KeyPoint>> orb(Mat src_image, int frame_id)$/;"	f	language:C++
 ORB_DETECTOR	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^enum detector_type { SURF_DETECTOR, ORB_DETECTOR};$/;"	e	language:C++	enum:detector_type	file:
@@ -41,5 +52,7 @@ SURF_DETECTOR	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/featu
 SURF_DETECTOR	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^enum detector_type { SURF_DETECTOR, ORB_DETECTOR};$/;"	e	language:C++	enum:detector_type	file:
 surf_threshold	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^const int surf_threshold = 5000;$/;"	v	language:C++
 surf_threshold	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^const int surf_threshold = 5000;$/;"	v	language:C++
+VERTICAL_FIRST	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^enum alignment_type { HORIZONTAL, VERTICAL_FIRST, VERTICAL_SECOND, NONE};$/;"	e	language:C++	enum:alignment_type	file:
+VERTICAL_SECOND	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^enum alignment_type { HORIZONTAL, VERTICAL_FIRST, VERTICAL_SECOND, NONE};$/;"	e	language:C++	enum:alignment_type	file:
 width	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main.cpp	/^int width = 0;$/;"	v	language:C++
 width	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn2/feature_detector/main_knn_descriptor.cpp	/^int width = 0;$/;"	v	language:C++

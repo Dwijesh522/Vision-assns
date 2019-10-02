@@ -16,6 +16,7 @@ const int surf_threshold = 5000;
 const int orb_threshold = 15000;
 const float good_match_percent = 0.05f;
 enum detector_type { SURF_DETECTOR, ORB_DETECTOR};
+enum alignment_type { HORIZONTAL, VERTICAL_FIRST, VERTICAL_SECOND, NONE};
 double persp_coor1 = INT_MAX;
 double persp_coor2 = INT_MAX;
 int height = 0;
@@ -69,6 +70,50 @@ pair<Mat, vector<KeyPoint>> orb(Mat src_image, int frame_id)
 	return make_pair(descriptor, src_key_points);
 }
 
+Mat equalize_hist(Mat img){
+//Convert the image from BGR to YCrCb color space
+	    Mat hist_equalized_image;
+	    cvtColor(img, hist_equalized_image, COLOR_BGR2YCrCb);
+
+	    //Split the image into 3 channels; Y, Cr and Cb channels respectively and store it in a std::vector
+	    vector<Mat> vec_channels;
+	    split(hist_equalized_image, vec_channels); 
+
+	    //Equalize the histogram of only the Y channel 
+	    equalizeHist(vec_channels[0], vec_channels[0]);
+
+	    //Merge 3 channels in the vector to form the color image in YCrCB color space.
+	    merge(vec_channels, hist_equalized_image); 
+		
+	    //Convert the histogram equalized image from YCrCb to BGR color space again
+	    cvtColor(hist_equalized_image,img, COLOR_YCrCb2BGR);
+	    return img;
+}
+// this function returns colored images
+vector<Mat> get_colored_images(string folder_path)
+{
+	vector<Mat> images;
+	vector<cv::String> img_file_names;
+	// reading the file names
+	glob(folder_path + "/*.jpg", img_file_names, false);
+	int images_size = img_file_names.size();
+	// traversing the images
+	for(int i=0; i<images_size; i++)
+	{
+		// reading the files
+		Mat src_image_temp = imread(img_file_names[i], CV_LOAD_IMAGE_COLOR);
+		if(src_image_temp.empty())	cout << "Can not read image...\n";
+		
+		Mat src_image ;
+		Size dst_size = src_image.size();
+		dst_size.width /= 2;
+		dst_size.height /= 2;
+		resize(src_image_temp, src_image, dst_size,0.5,0.5, CV_INTER_AREA);
+		src_image = equalize_hist(src_image);
+		images.push_back(src_image);
+	}
+	return images;
+}
 // this function reads all images from folder path given in the arg
 // and returns  vector of images, vector of descriptors and 2D vector whose (i,j) th element represents
 // jth feature of ith image
@@ -85,8 +130,14 @@ pair< vector<Mat>, pair< vector<Mat>, vector<vector<KeyPoint>>> > get_desc_kpoin
 	for(int i=0; i<images_size; i++)
 	{
 		// reading the files
-		Mat src_image = imread(img_file_names[i], IMREAD_GRAYSCALE);
-		if(src_image.empty())	cout << "Can not read image...\n";
+		Mat src_image_temp = imread(img_file_names[i], IMREAD_GRAYSCALE);
+		if(src_image_temp.empty())	cout << "Can not read image...\n";
+		
+		Mat src_image ;
+		Size dst_size = src_image.size();
+		dst_size.width /= 2;
+		dst_size.height /= 2;
+		resize(src_image_temp, src_image, dst_size,0.5,0.5, CV_INTER_AREA);
 		
 		pair<Mat, vector<KeyPoint>> des_kp;
 	
@@ -260,6 +311,220 @@ bool sort_des(const pair<double, pair<int, int>> &homography1, const pair<double
 	return homography1.first > homography2.first;
 }
 
+// returns alignment of two matrices
+alignment_type get_alignment(Mat h1, Mat h2)
+{
+	// above the horizontal line
+	int y1 = height/8;
+	// below the horizontal line
+	int y2 = (-1)*(height/8);
+	// for x1, y1 getting corresponding point
+	int y1_h1 = (h1.at<double>(1, 1)*y1 + h1.at<double>(1, 2))/(h1.at<double>(2, 1)*y1 + h1.at<double>(2, 2));
+	int y1_h2 = (h2.at<double>(1, 1)*y1 + h2.at<double>(1, 2))/(h2.at<double>(2, 1)*y1 + h2.at<double>(2, 2));
+	// for x2, y2 getting corresponding point
+	int y2_h1 = (h1.at<double>(1, 1)*y2 + h1.at<double>(1, 2))/(h1.at<double>(2, 1)*y2 + h1.at<double>(2, 2));
+	int y2_h2 = (h2.at<double>(1, 1)*y2 + h2.at<double>(1, 2))/(h2.at<double>(2, 1)*y2 + h2.at<double>(2, 2));
+
+	// vertical check assuming y axis is facing up
+	if(y1*y1_h1 < 0 and y1*y1_h2 > 0)	return VERTICAL_FIRST;		
+	else if(y1*y1_h1 > 0 and y1*y1_h2 < 0)	return VERTICAL_SECOND;
+	else if(y2*y2_h1 < 0 and y2*y2_h2 > 0)	return VERTICAL_SECOND;
+	else if(y2*y2_h1 > 0 and y2*y2_h2 < 0)	return VERTICAL_FIRST;
+	// horizontal check
+//	else if(y1*y1_h1 > 0 or y1*y1_h2 > 0)	return HORIZONTAL;
+	else					return NONE;
+}
+pair<int,vector<int> > getElementInRow(int** arr, int ind, vector<int> path, int max_ind){
+	int j = 0;
+	for(j=0; j<=max_ind && arr[ind][j] != 1; j++);
+	if(j == max_ind + 1){
+		return make_pair(ind,path);
+	}
+	else{
+		path.push_back(j);
+		pair<int, vector<int> >  ans = getElementInRow(arr,j,path, max_ind);
+		return ans;
+	}
+}
+
+bool comp(const pair<int,vector<int> > &p1, const pair<int,vector<int> >  &p2){
+	if(p1.first == p2.first){
+		vector<int> temp1 = p1.second;
+		vector<int> temp2 = p2.second;
+		return (temp1.size() > temp2.size());
+	}
+	else
+		return (p1.first < p2.first);
+}
+vector<vector<int> > compute_rows(vector<pair<int,int> > horiz, int max_img_ind){
+	int** adj_matrix;
+	adj_matrix = new int*[max_img_ind+1];
+	for(int i =0; i<max_img_ind+1;i++){
+		int* temp = new int[max_img_ind+1];
+		adj_matrix[i] = temp;
+	}
+	for(int i=0; i<horiz.size();i++){
+		int start = horiz[i].first;
+		int end = horiz[i].second;
+		adj_matrix[start][end] = 1;
+	}
+	vector<pair<int, vector<int> > > dfs_answers;
+	for(int i=0; i<=max_img_ind;i++){
+		vector<int> temp;
+		temp.push_back(i);
+		pair<int,vector<int> > answer = getElementInRow(adj_matrix,i,temp, max_img_ind);
+		dfs_answers.push_back(answer);
+	}
+	sort(dfs_answers.begin(), dfs_answers.end(),comp);
+	int last = -1;
+	vector<vector<int> > ret;
+	for(int i=0; i<dfs_answers.size();i++){
+		if((dfs_answers[i]).first != last){
+			last = (dfs_answers[i]).first;
+			ret.push_back(dfs_answers[i].second);
+		}
+	}
+	cout << ret.size() << " NUmber of rows"<< endl;
+	return ret;
+} 
+
+vector<vector<int> > getOrdering(vector<pair<int,int> > horiz, vector<pair<int,int> > vert, int img_max_ind){
+	vector<vector<int> > hori_rows = compute_rows(horiz, img_max_ind);
+	cout << hori_rows[0].size() << " waka" << hori_rows[1].size() << endl;
+	int img_row_ind[img_max_ind+1];
+	for(int i =0; i<hori_rows.size();i++){
+		for(int j=0; j<hori_rows[i].size();j++)
+			img_row_ind[hori_rows[i][j]] = i;
+	}
+	if(vert.size() == 0){
+		return hori_rows;
+	}
+	else{
+	vector<pair<int,int> > ordered_rows;
+	int forward_edge[img_max_ind+1] = {-1};
+	int backward_edge[img_max_ind+1] = {-1};
+	for(int i=0; i<vert.size();i++){
+		int start = vert[i].first;
+		int end = vert[i].second;
+		forward_edge[start] = end;
+		backward_edge[end] = start;
+		ordered_rows.push_back(make_pair(img_row_ind[start],img_row_ind[end]));
+	}
+	vector<vector<int> > vert_order = compute_rows(ordered_rows, hori_rows.size()-1);
+//	cout << vert_order[0][0] << " Order of rows" << vert_order[0][1] << endl;
+	int max_len = -1;
+	int max_len_ind = 0;
+	for(int i=0; i<hori_rows.size();i++){
+//		cout << hori_rows[vert_order[0][i]].size() << " spaxe " << max_len << endl;
+		int ind = vert_order[0][i];
+		int val =  hori_rows[ind].size();
+		if(max_len < val){
+			max_len_ind = i;
+			max_len = val;
+			//cout << i << " Index of update" << endl;
+		}	
+	} 
+	cout << max_len_ind << " Maximum length of row" << endl;
+	int** final_answer;
+	final_answer  = new int*[hori_rows.size()];
+	for(int i =0; i<hori_rows.size();i++){
+		int* temp = new int[max_len];
+		final_answer[i] = temp;
+	}
+	for(int i=0; i<hori_rows.size();i++){
+		for(int j=0; j<max_len;j++)
+			final_answer[i][j] = -1;
+	}
+	for(int i=0; i<max_len;i++){
+		int temp = vert_order[0][max_len_ind];
+		final_answer[max_len_ind][i] = hori_rows[temp][i];
+	}
+	cout << final_answer[1][0] <<  " wow" <<endl;
+	bool visited = false;
+	for(int i = max_len_ind; i >=1; i--){
+		int first_update_index = 0;
+		for(int j=0; j<max_len;j++){
+			if(final_answer[i][j] != -1){
+				int temp = final_answer[i][j];
+				cout << temp << " check" << endl;
+				final_answer[i-1][j] = backward_edge[temp];
+				cout << "police" << endl;
+				if(!visited){
+					first_update_index = j;
+					visited = true;
+				}
+			}
+		}
+		int temp = vert_order[0][i-1];
+		if(final_answer[i-1][first_update_index] != hori_rows[temp][0]){
+			int ind = find(hori_rows[temp].begin(), hori_rows[temp].end(),final_answer[i-1][first_update_index]) - hori_rows[temp].begin();
+			int temp1 = ind-1;
+		       	for(int j = first_update_index-1; temp1 >=0 ;j--){
+				final_answer[i-1][j] = hori_rows[temp][temp1];
+				temp1--;
+			}
+		}	
+	}
+	for(int i = max_len_ind; i < vert_order[0].size()-1; i++){
+		int first_update_index = 0;
+		for(int j=0; j<max_len;j++){
+			if(final_answer[i][j] != -1){
+				int temp = final_answer[i][j];
+				final_answer[i+1][j] = forward_edge[temp];
+				first_update_index = j;
+				break;
+			}
+		}
+		int temp = vert_order[0][i+1];
+		if(final_answer[i+1][first_update_index] != hori_rows[temp][0]){
+			int ind = find(hori_rows[temp].begin(), hori_rows[temp].end(),final_answer[i+1][first_update_index]) - hori_rows[temp].begin();
+			int temp1 = ind-1;
+		       	for(int j = first_update_index-1; temp1 >=0 ;j--){
+				final_answer[i+1][j] = hori_rows[temp][temp1];
+				temp1--;
+			}
+		}	
+	}
+	vector<vector<int> > row_vec;
+	for(int i =0; i<hori_rows.size(); i++){
+		vector<int> temp;
+		for(int j=0; j<max_len; j++)
+			temp.push_back(final_answer[i][j]);
+		row_vec.push_back(temp);
+	}
+	return row_vec;
+}
+}
+
+// returns homography matrix between source and destination images
+Mat get_homography(int r1, int c1, int r2, int c2, vector<vector<Mat>> &pair_wise_homography_matrix, vector<vector<int>> &ordered_rows)
+{
+	// base case
+	if(r1==r2 and c1==c2)	return Mat_<double>(3,3) << 1, 0, 0, 0, 1, 0, 0, 0, 1;
+	// destination is up from source
+	if(r2 < r1)
+	{}
+	// destination is below from source
+	else if(r2 > r1)
+	{}
+	// destination is in the same row
+	else if(r2 == r1)
+	{
+		// destination is in the right side
+		if(c2 > c1)
+		{
+			return 	get_homography(r1, c1+1, r2, c2, pair_wise_homography_matrix, ordered_rows) * 
+				pair_wise_homography_matrix[ordered_rows[r1][c1]][ordered_rows[r1][c1+1]];
+		}
+		// destination is in the left side
+		else
+		{
+			return 	get_homography(r1, c1-1, r2, c2, pair_wise_homography_matrix, ordered_rows) * 
+				(pair_wise_homography_matrix[ordered_rows[r1][c1-1]][ordered_rows[r1][c1]].inv());
+		}
+	}
+}
+
 int main(int argc, char* argv[])
 {
 	// getting the image folder path
@@ -297,12 +562,170 @@ int main(int argc, char* argv[])
 	//good_homography_indices.erase( good_homography_indices.begin()+image_count-1, good_homography_indices.end());
 	
 	// erasing elements having zero score.
-	// ------  code here  ----------
+//	auto i = good_homography_indices.begin();
+//	for(; i<good_homography_indices.end(); i++)	if(i->first == 0)	break;
+//	good_homography_indices.erase(i, good_homography_indices.end());
 
-	// printing n-1 sorted indices of homography
-	cout << "after erasing\n";
-	for(int i=0; i<image_count-1; i++)	cout << good_homography_indices[i].first << ": " <<
-							good_homography_indices[i].second.first << " -> " << 
-							good_homography_indices[i].second.second << endl;
+	// removing elements that does not make duplex
+	int good_homography_indices_size = good_homography_indices.size();
+	vector< pair< double, pair<int, int> >> duplex_homography_indices;
+	for(int i=0; i<good_homography_indices_size-1; i++)
+	{
+		int x = good_homography_indices[i].second.first, y = good_homography_indices[i].second.second;
+		for(int j=i+1; j<good_homography_indices_size; j++)
+		{
+			if(x == good_homography_indices[j].second.second and y == good_homography_indices[j].second.first)
+			{
+				duplex_homography_indices.push_back(good_homography_indices[i]);
+				duplex_homography_indices.push_back(good_homography_indices[j]);
+				break;
+			}
+		}
+	}
+
+	// printing sorted indices of homography
+	cout << "after filtering\n";
+	for(int i=0; i<duplex_homography_indices.size(); i++)	cout << duplex_homography_indices[i].first << ": " <<
+							duplex_homography_indices[i].second.first << " -> " << 
+							duplex_homography_indices[i].second.second << endl;
+	
+	// creating horizontal and vertical pair of indices
+	vector< pair<int, int> > horizontal_indices, vertical_indices;
+	for(int i=0; i<duplex_homography_indices.size(); i=i+2)
+	{
+		if( duplex_homography_indices[i].first >= 0.43 and duplex_homography_indices[i+1].first < 0.43)		
+		{
+			Mat h1 = pair_wise_homography_matrix[duplex_homography_indices[i].second.first][duplex_homography_indices[i].second.second];
+			// above the horizontal line
+			int y1 = 9*height/16;
+			// below the horizontal line
+			int y2 = (-1)*(9*height/16);
+			// for x1, y1 getting corresponding point
+			int y1_h1 = (h1.at<double>(1, 1)*y1 + h1.at<double>(1, 2))/(h1.at<double>(2, 1)*y1 + h1.at<double>(2, 2));
+			// for x2, y2 getting corresponding point
+			int y2_h1 = (h1.at<double>(1, 1)*y2 + h1.at<double>(1, 2))/(h1.at<double>(2, 1)*y2 + h1.at<double>(2, 2));
+			cout << duplex_homography_indices[i].second.first << " -> " << duplex_homography_indices[i].second.second << endl;
+			cout << y1 << " -> " << y1_h1 << " , " << y2 << " -> " << y2_h1 << endl;
+			// vertical check assuming y axis is facing up
+			if(y1*y1_h1 > 0 and y2*y2_h1 > 0 and y1_h1 < 2*y1)
+				horizontal_indices.push_back(duplex_homography_indices[i].second); 
+			continue;
+		}
+		else if(duplex_homography_indices[i+1].first >= 0.43 and duplex_homography_indices[i].first < 0.43)		
+		{
+			Mat h1 = pair_wise_homography_matrix[duplex_homography_indices[i+1].second.first][duplex_homography_indices[i+1].second.second];
+			// above the horizontal line
+			int y1 = 9*height/16;
+			// below the horizontal line
+			int y2 = (-1)*(9*height/16);
+			// for x1, y1 getting corresponding point
+			int y1_h1 = (h1.at<double>(1, 1)*y1 + h1.at<double>(1, 2))/(h1.at<double>(2, 1)*y1 + h1.at<double>(2, 2));
+			// for x2, y2 getting corresponding point
+			int y2_h1 = (h1.at<double>(1, 1)*y2 + h1.at<double>(1, 2))/(h1.at<double>(2, 1)*y2 + h1.at<double>(2, 2));
+			cout << duplex_homography_indices[i+1].second.first << " -> " << duplex_homography_indices[i+1].second.second << endl;
+			cout << y1 << " -> " << y1_h1 << " , " << y2 << " -> " << y2_h1 << endl;
+			// vertical check assuming y axis is facing up
+			if(y1*y1_h1 > 0 and y2*y2_h1 > 0 and y1_h1 < 2*y1)
+				horizontal_indices.push_back(duplex_homography_indices[i+1].second); 
+			continue;
+		}
+
+		alignment_type alignment = get_alignment(pair_wise_homography_matrix[duplex_homography_indices[i].second.first][duplex_homography_indices[i].second.second], 
+							 pair_wise_homography_matrix[duplex_homography_indices[i+1].second.first][duplex_homography_indices[i+1].second.second]);
+
+		if(alignment == VERTICAL_FIRST)
+		{
+			if(duplex_homography_indices[i].first >= 0.5 and duplex_homography_indices[i+1].first >= 0.5)	
+				vertical_indices.push_back(duplex_homography_indices[i].second);
+		}
+		else if(alignment == VERTICAL_SECOND)
+		{
+			if(duplex_homography_indices[i].first >= 0.5 and duplex_homography_indices[i+1].first >= 0.5)	
+				vertical_indices.push_back(duplex_homography_indices[i+1].second);
+		}
+	}
+	cout << "*************\n";
+	for(int i=0; i< horizontal_indices.size(); i++)		cout << horizontal_indices[i].first << " -> " << horizontal_indices[i].second << "  ";
+	cout << endl;
+	for(int i=0; i< vertical_indices.size(); i++)		cout << vertical_indices[i].first << " -> " << vertical_indices[i].second << "  ";
+	cout << "-------------\n";
+	
+	// getting ordered rows
+	vector<vector<int>> ordered_rows = getOrdering(horizontal_indices, vertical_indices, all_mappings.first.size()-1);
+
+	cout << "----------\nordered_rows\n";
+	// printing ordered rows
+	int rows = ordered_rows.size();
+	int cols = ordered_rows[0].size();
+	cout << rows << " " << cols << endl;
+	for(int i=0; i<rows; i++)
+	{
+		for(int j=0; j<cols; j++)
+			cout << ordered_rows[i][j] << " ";
+		cout << endl;
+	}
+
+	vector<Mat> colored_images = get_colored_images(folder_path);
+	int vertical_row_threshold = 4*colored_images[0].rows;
+	
+	int j=0;
+	// int pan_size = 5000;
+	// Mat warp = Mat_<double>(5000,5000);
+	// Mat trans = (Mat_<double>(3,3)<< 1,0,200,0,1,200,0,0,1);
+	// Mat identity = (Mat_<double>(3,3)<< 1,0,0,0,1,0,0,0,1);
+	// int mid = ordered_rows[j].size()/2;
+	Mat warped_image = colored_images[ordered_rows[j][ordered_rows[j].size()-1]];
+	// warpPerspective(warped_image,warp,trans*identity,warp.size());
+	// imwrite("check12.jpg",warp);
+	// Mat right_homo = identity; 
+	// Size img_size = colored_images[ordered_rows[j][mid]].size();
+	// for(int i = mid+1; i<ordered_rows[j].size();i++){
+	// 	right_homo = right_homo * pair_wise_homography_matrix[ordered_rows[j][i-1]][ordered_rows[j][i]].inv();
+	// 	warpPerspective(colored_images[ordered_rows[j][i]], warp, trans * right_homo, img_size);
+	// 	imwrite("check"+ to_string(i)+".jpg",warp);
+	// 	img_size.width *= 2;
+	// }
+	// Mat left_homo = identity;
+	// for(int i = mid-1; i>=0;i--){
+	// 	left_homo = left_homo * pair_wise_homography_matrix[ordered_rows[j][i]][ordered_rows[j][i+1]];
+	// 	warpPerspective(colored_images[ordered_rows[j][i]], warp, trans * left_homo, img_size);
+	// 	imwrite("check"+ to_string(i)+".jpg",warp);
+	// 	img_size.width *= 2;
+	// }
+	for(int i=ordered_rows[j].size()-1; i>=1; i--)
+	{
+		if(ordered_rows[j][i] == -1)	continue;
+
+		// warping the images
+		Mat H_right_to_left = pair_wise_homography_matrix[ordered_rows[j][i-1]][ordered_rows[j][i]].inv();
+		// coping panaroma to temp variable
+		Mat left_image = colored_images[ordered_rows[j][i-1]];
+		Mat right_image;
+		warped_image.copyTo(right_image);
+		
+		Size output_size = Size(left_image.cols + right_image.cols, vertical_row_threshold);
+		// plotting right image
+		warpPerspective(right_image, warped_image, H_right_to_left, output_size);	
+		imwrite("hello" + to_string(i) + ".jpg", warped_image);
+		// getting left half of panorama == roi
+		Mat half(warped_image, Rect(0, 0, left_image.cols, left_image.rows));
+		// coping left image to it
+		left_image.copyTo(half);
+	}	
+	warped_image = equalize_hist(warped_image);
+	imwrite("warped_image.jpg", warped_image);
 	return 0;
 }
+
+		// warping the images
+//		Mat H_right_to_left = pair_wise_homography_matrix[ordered_rows[0][0]][ordered_rows[0][1]].inv();
+//		Mat left_image = colored_images[ordered_rows[0][0]];
+//		Mat right_image = colored_images[ordered_rows[0][1]];
+//		Mat warped_image;
+//		Size output_size = Size(left_image.cols + right_image.cols, left_image.rows);
+//		// plotting right image
+//		warpPerspective(right_image, warped_image, H_right_to_left, output_size);
+//		// getting left half of panorama == roi
+//		Mat half(warped_image, Rect(0, 0, left_image.cols, left_image.rows));
+//		// coping left image to it
+//		left_image.copyTo(half);
