@@ -1,0 +1,13 @@
+!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+des1	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^des1=0$/;"	v	language:Python
+des2	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^des2=0$/;"	v	language:Python
+glyph1	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^glyph1=0$/;"	v	language:Python
+glyph2	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^glyph2=0$/;"	v	language:Python
+glyph_initialization	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def glyph_initialization():$/;"	f	language:Python
+image_name1	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^image_name1 = "glyph1.jpg"$/;"	v	language:Python
+image_name2	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^image_name2 = "glyph2.jpg"$/;"	v	language:Python
+kp1	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^kp1=0$/;"	v	language:Python
+kp2	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^kp2=0$/;"	v	language:Python
+main	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def main():$/;"	f	language:Python
+MIN_MATCHES	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^MIN_MATCHES = 5$/;"	v	language:Python
+process_video	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def process_video(video_name):$/;"	f	language:Python
