@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import sys
+import glob
 
 #----------------------------------------------------------------
 #------------------- global variables ---------------------------
@@ -16,6 +17,7 @@ glyph1=0
 glyph2=0
 # thresholds
 MIN_MATCHES = 5
+GOOD_CHESSBOEARD_IMAGES = 12
 #----------------------------------------------------------------
 
 
@@ -63,6 +65,33 @@ def glyph_initialization():
     kp1, des1 = orb.detectAndCompute(glyph1, None)
     kp2, des2 = orb.detectAndCompute(glyph2, None)
 
+# camera calibration
+def calibration():
+    #termination criteria
+    criteria = (cv2.TERM_CRITERIA_EPS, cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
+    #preparing object points
+    objp = np.zeros((8*8, 3), np.float32)
+    objp[:,:2] = np.mgrid[0:8, 0:8].T.reshape(-1, 2)
+    # arrays to store object points and image points from all the images
+    obj_points = []
+    image_points = []
+    # all the images
+    images = glob.glob('*.jpg')
+    # looping through images untill we get 12 good images
+    good_image_count = 0
+    for fname in images:
+        image = cv2.imread(fname)
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        # finding the chess board corners
+        ret, corners = cv2.findChessboardCorners(gray, (8, 8), None)
+        # if found adding object points and image points
+        if(ret == True):
+            good_image_count += 1
+            obj_points.append(objp)
+            # refining the corners
+            corners2 = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
+            
+
 def main():
     #reading the command line argument
     arg_size = len(sys.argv)
@@ -71,6 +100,7 @@ def main():
     else:
         video_path = sys.argv[1]
     
+#    calibration()
     glyph_initialization()
     process_video(video_path)
 
