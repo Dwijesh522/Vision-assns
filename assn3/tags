@@ -1,15 +1,19 @@
 !_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
 calibration	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def calibration():$/;"	f	language:Python
-des1	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^des1=0$/;"	v	language:Python
-des2	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^des2=0$/;"	v	language:Python
-glyph1	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^glyph1=0$/;"	v	language:Python
-glyph2	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^glyph2=0$/;"	v	language:Python
+get_glyph_pattern	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def get_glyph_pattern(image, black_threshold, white_threshold):$/;"	f	language:Python
+get_straight_quad	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def get_straight_quad(gray_image, src):$/;"	f	language:Python
+get_transformed_points	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def get_transformed_points(width, height):$/;"	f	language:Python
 glyph_initialization	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def glyph_initialization():$/;"	f	language:Python
 GOOD_CHESSBOEARD_IMAGES	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^GOOD_CHESSBOEARD_IMAGES = 12$/;"	v	language:Python
-image_name1	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^image_name1 = "glyph1.jpg"$/;"	v	language:Python
-image_name2	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^image_name2 = "glyph2.jpg"$/;"	v	language:Python
-kp1	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^kp1=0$/;"	v	language:Python
-kp2	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^kp2=0$/;"	v	language:Python
 main	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def main():$/;"	f	language:Python
+max_width_height	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def max_width_height(points):$/;"	f	language:Python
 MIN_MATCHES	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^MIN_MATCHES = 5$/;"	v	language:Python
+OBJ	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^class OBJ:$/;"	c	language:Python
+object_initialization	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def object_initialization():$/;"	f	language:Python
+order_points	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def order_points(points):$/;"	f	language:Python
 process_video	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def process_video(video_name):$/;"	f	language:Python
+projection_matrix	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def projection_matrix(camera_parameters, homography):$/;"	f	language:Python
+render	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def render(img, obj, projection, h, w, color=False):$/;"	f	language:Python
+resize_image	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def resize_image(img, new_size):$/;"	f	language:Python
+rotate_image	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def rotate_image(image, angle):$/;"	f	language:Python
+__init__	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^    def __init__(self, filename, swapyz=False):$/;"	m	language:Python	class:OBJ
