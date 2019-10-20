@@ -4,6 +4,8 @@ get_glyph_pattern	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/o
 get_straight_quad	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def get_straight_quad(gray_image, src):$/;"	f	language:Python
 get_transformed_points	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def get_transformed_points(width, height):$/;"	f	language:Python
 glyph_initialization	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def glyph_initialization():$/;"	f	language:Python
+glyph_pattern_1	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^glyph_pattern_1 = 0 $/;"	v	language:Python
+glyph_pattern_2	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^glyph_pattern_2 = 0$/;"	v	language:Python
 GOOD_CHESSBOEARD_IMAGES	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^GOOD_CHESSBOEARD_IMAGES = 12$/;"	v	language:Python
 main	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def main():$/;"	f	language:Python
 max_width_height	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn3/object_projection.py	/^def max_width_height(points):$/;"	f	language:Python

@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import sys
 import glob
+import math
 
 #----------------------------------------------------------------
 #------------------- global variables ---------------------------
@@ -9,11 +10,13 @@ import glob
 image_name1 = "glyph1.jpg"; image_name2 = "glyph2.jpg"
 # glyph key points and descriptors
 kp1=0; kp2=0; des1=0; des2=0; glyph1=0; glyph2=0; glyph_match_1 = 0; glyph_match_2 = 0; glyph_height=0; glyph_width=0
+glyph_pattern_1 = 0 
+glyph_pattern_2 = 0
 # thresholds
 MIN_MATCHES = 5
 GOOD_CHESSBOEARD_IMAGES = 12
 #camera calubration parameters
-ret=0; mtx=0; dist=0; rvecs=0; tvecs=0; height_video_frames=0; width_video_frames=0; new_camera_matrix=0; bl_threshold = 100; white_threshold = 155
+ret=0; mtx=0; dist=0; rvecs=0; tvecs=0; height_video_frames=0; width_video_frames=0; new_camera_matrix=0; bl_threshold = 100; white_threshold = 130
 # 3d object
 object1=0; object2=0
 #----------------------------------------------------------------
@@ -32,17 +35,17 @@ class OBJ:
             values = line.split()
             if not values: continue
             if values[0] == 'v':
-                v = map(float, values[1:4])
+                v = list(map(float, values[1:4]))
                 if swapyz:
                     v = v[0], v[2], v[1]
                 self.vertices.append(v)
             elif values[0] == 'vn':
-                v = map(float, values[1:4])
+                v = list(map(float, values[1:4]))
                 if swapyz:
                     v = v[0], v[2], v[1]
                 self.normals.append(v)
             elif values[0] == 'vt':
-                self.texcoords.append(map(float, values[1:3]))
+                self.texcoords.append(list(map(float, values[1:3])))
             #elif values[0] in ('usemtl', 'usemat'):
                 #material = values[1]
             #elif values[0] == 'mtllib':
@@ -103,12 +106,12 @@ def get_straight_quad(gray_image, src):
 
     (max_width, max_height) = max_width_height(src)
     dst = get_transformed_points(max_width, max_height)
-
     #Homography
     matrix = cv2.getPerspectiveTransform(src, dst)
     warped = cv2.warpPerspective(gray_image, matrix, max_width_height(src))
-
-    return (warped,src, matrix.inv())                                                                   #### ////
+    if(not np.linalg.det(matrix) == 0):
+        matrix = np.linalg.inv(matrix)
+    return (warped,src, matrix)                                                                   #### ////
 
 #Resize the image to a specific size
 def resize_image(img, new_size):
@@ -152,12 +155,10 @@ def get_glyph_pattern(image, black_threshold, white_threshold):
  
     # threshold pixels to either black or white
     for idx, val in enumerate(cells):
-        if val < black_threshold:
-            cells[idx] = 0
-        elif val > white_threshold:
+        if val > white_threshold:
             cells[idx] = 1
         else:
-            return None
+            cells[idx] = 0
  
     return cells
 
@@ -170,7 +171,7 @@ def projection_matrix(camera_parameters, homography):
     col_2 = rot_and_transl[:, 1]
     col_3 = rot_and_transl[:, 2]
     # normalise vectors
-    l = math.sqrt(np.linalg.norm(col_1, 2) * np.linalg.norm(col_2, 2))
+    l = np.sqrt(np.linalg.norm(col_1, 2) * np.linalg.norm(col_2, 2))
     rot_1 = col_1 / l
     rot_2 = col_2 / l
     translation = col_3 / l
@@ -189,7 +190,7 @@ def projection_matrix(camera_parameters, homography):
 # given img: target frame, obj: object to project, projection: 3D projection matrix, h: height of gray glyph image, w: width of gray glyph image
 def render(img, obj, projection, h, w, color=False):
     vertices = obj.vertices
-    scale_matrix = np.eye(3) * 3
+    scale_matrix = np.eye(3) * 1
 
     for face in obj.faces:
         face_vertices = face[0]
@@ -199,6 +200,9 @@ def render(img, obj, projection, h, w, color=False):
         # model points must be displaced
         points = np.array([[p[0] + w / 2, p[1] + h / 2, p[2]] for p in points])
         dst = cv2.perspectiveTransform(points.reshape(-1, 1, 3), projection)
+#        rotation_matrix = np.array([[1, 0, 0], [0, 0, -1], [0, 1, 0]])
+#        dst[:,:,0] = rotation_matrix.dot(dst[:,:,0])
+#        dst[:,:,1] = rotation_matrix.dot(dst[:,:,1])
         imgpts = np.int32(dst)
         if color is False:
             cv2.fillConvexPoly(img, imgpts, (137, 27, 211))
@@ -221,6 +225,7 @@ def process_video(video_name):
     while(True):
         # capturing frame by frame
         ret, frame = cap.read()
+        frame = cv2.undistort(frame, mtx, dist, None, new_camera_matrix)
         
         #------------------------------------------ important parameters ------------------------------------------------
         # homography from original glyphs to target image frame from video and corresponding 3D transformation matrix
@@ -231,7 +236,7 @@ def process_video(video_name):
         # getting the gray image
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         gray = cv2.GaussianBlur(gray,(5,5),0)
-        edges = cv2.Canny(gray,100,200)
+        edges = cv2.Canny(gray,50,200)
         contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         contours = sorted(contours, key = cv2.contourArea, reverse = True)[:10]
         # out of all possible contours, identify if there exist glyphs or not. If so then find corresponding homographies
@@ -241,27 +246,34 @@ def process_video(video_name):
             if len(approx) == num_points:
                 (fixed_quad,approx, unknown_homography) = get_straight_quad(gray,approx.reshape(4,2))               #### /////
                 resized_img = resize_image(fixed_quad, SHAPE_RESIZE)
+                
+                kernel_rect1 = cv2.getStructuringElement(cv2.MORPH_RECT,(5, 5))
+                resized_img = cv2.erode(resized_img, kernel_rect1, iterations=1) 
 
-
+                cv2.imshow("binary", resized_img)
+                cv2.waitKey(10)
                 if resized_img[5,5] > bl_threshold: continue
 
                 for i in range(4):
                     glyph_query = get_glyph_pattern(resized_img, bl_threshold, white_threshold)
-
+                    print("yo")
+                    print( glyph_query)
                     if glyph_query == glyph_pattern_1:
+                        print("got it")
                         is_glyph1_present = True                                                                    #### ////
                         glyph1_homography = unknown_homography                                                      #### ////
                         glyph_match_1 = approx
                         break
 
                     if glyph_query == glyph_pattern_2:
+                        print("gotcha")
                         is_glyph2_present = True                                                                    #### ////
                         glyph2_homography = unknown_homography                                                      #### ////
                         glyph_match_2 = approx
                         break
 
                     resized_img = rotate_image(resized_img, 90)
-                    np.roll(approx,1,axis = 0)
+                    approx = np.roll(approx,1,axis = 0)
         
         # here we know if there exist glyphs in the target frame or not, if so then also the homographies
         ## calculating 3D transformatin matrix if possible
@@ -287,12 +299,14 @@ def process_video(video_name):
 
 # glyphs initialization: find keyPoints and descriptors
 def glyph_initialization():
-    global glyph1, glyph2, kp1, kp2, des1, des2, glyph1_height, glyph1_wi
+    global glyph1, glyph2, kp1, kp2, des1, des2, glyph_height, glyph_width, glyph_pattern_1, glyph_pattern_2
     glyph1 = cv2.imread(image_name1, 0)
     glyph2 = cv2.imread(image_name2, 0)
-    glyph_height, glyph_width = glyph1.shape[0], glyph1.shape[1]
+    (glyph_height, glyph_width) = glyph1.shape
     glyph_pattern_1 = get_glyph_pattern(glyph1, bl_threshold, white_threshold)
     glyph_pattern_2 = get_glyph_pattern(glyph2, bl_threshold, white_threshold)
+    print(glyph_pattern_1)
+    print(glyph_pattern_2)
 
 # camera calibration
 def calibration():
@@ -329,20 +343,15 @@ def calibration():
             cv2.waitKey(2000)
     cv2.destroyAllWindows();
     ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(obj_points, image_points, gray.shape[::-1],None,None)
-    print(mtx)
     # finding new optimal matrices
     new_camera_matrix, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (width_video_frames, height_video_frames), 1, (width_video_frames, height_video_frames))
     # undistorting the image
-    deleteThis = cv2.imread("2.jpg")
-    cv2.imwrite('old.jpg', deleteThis)
-    dst = cv2.undistort(deleteThis, mtx, dist, None, new_camera_matrix)
-    cv2.imwrite('new.jpg', dst)
 
 # initializing the objects with .obj file
 def object_initialization():
     global object1, object2
-    object1 = OBJ("fox.obj")
-    object2 = OBJ("rat.obj")
+    object1 = OBJ("fox.obj", swapyz=True)
+    object2 = OBJ("rat.obj", swapyz=True)
 
 def main():
     #reading the command line argument
