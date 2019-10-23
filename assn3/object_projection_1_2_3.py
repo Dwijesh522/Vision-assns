@@ -1,8 +1,12 @@
+#------------------- Asumptions in the assignments --------------
+# glyph1 is base for our car and glyph2 is stopping wall
+#----------------------------------------------------------------
 import cv2
 import numpy as np
 import sys
 import glob
 import math
+from statistics import mean
 
 #----------------------------------------------------------------
 #------------------- global variables ---------------------------
@@ -16,7 +20,7 @@ glyph_pattern_2 = 0
 MIN_MATCHES = 5
 GOOD_CHESSBOEARD_IMAGES = 12
 #camera calubration parameters
-ret=0; mtx=0; dist=0; rvecs=0; tvecs=0; height_video_frames=0; width_video_frames=0; new_camera_matrix=0; bl_threshold = 100; white_threshold = 130
+ret=0; mtx=0; dist=0; rvecs=0; tvecs=0; height_video_frames=0; width_video_frames=0; new_camera_matrix=0; bl_threshold = 100; white_threshold = 112; WEAK_COLOR_THRESHOLD = 50
 # 3d object
 object1=0; object2=0
 #----------------------------------------------------------------
@@ -128,39 +132,105 @@ def rotate_image(image, angle):
     rot_mtx = cv2.getRotationMatrix2D(center, angle, 1.0)
     return cv2.warpAffine(image, rot_mtx, (w,h))
 
+
+def adjust_gamma(image, gamma=0.6):
+    # build a lookup table mapping the pixel values [0, 255] to
+    # their adjusted gamma values
+    invGamma = 1.0 / gamma
+    table = np.array([((i / 255.0) ** invGamma) * 255
+        for i in np.arange(0, 256)]).astype("uint8")
+ 
+    # apply gamma correction using the lookup table
+    return cv2.LUT(image, table)
+
+# given a point find average intensity value
+def get_avg_intensity_value(image, r, c):
+	average_intensity = 0
+	for i in range(5):
+		for j in range(5):
+			average_intensity += image[r+i-2, c+j-2]
+	average_intensity /= 25
+	return average_intensity	
+
 def get_glyph_pattern(image, black_threshold, white_threshold):
  
     # collect pixel from each cell (left to right, top to bottom)
     cells = []
+    image = adjust_gamma(image)
      
     cell_half_width = int(round(image.shape[1] / 10.0))
     cell_half_height = int(round(image.shape[0] / 10.0))
- 
+    print("dimension: ")
+    print(cell_half_height)
+    print(cell_half_width)
     row1 = cell_half_height*3
     row2 = cell_half_height*5
     row3 = cell_half_height*7
     col1 = cell_half_width*3
     col2 = cell_half_width*5
     col3 = cell_half_width*7
- 
-    cells.append(image[row1, col1])
-    cells.append(image[row1, col2])
-    cells.append(image[row1, col3])
-    cells.append(image[row2, col1])
-    cells.append(image[row2, col2])
-    cells.append(image[row2, col3])
-    cells.append(image[row3, col1])
-    cells.append(image[row3, col2])
-    cells.append(image[row3, col3])
- 
-    # threshold pixels to either black or white
-    for idx, val in enumerate(cells):
-        if val > white_threshold:
-            cells[idx] = 1
-        else:
-            cells[idx] = 0
- 
+
+    i11 = (get_avg_intensity_value(image, row1, col1))
+    i12 = (get_avg_intensity_value(image, row1, col2))
+    i13 = (get_avg_intensity_value(image, row1, col3))
+    i21 = (get_avg_intensity_value(image, row2, col1))
+    i22 = (get_avg_intensity_value(image, row2, col2))
+    i23 = (get_avg_intensity_value(image, row2, col3))
+    i31 = (get_avg_intensity_value(image, row3, col1))
+    i32 = (get_avg_intensity_value(image, row3, col2))
+    i33 = (get_avg_intensity_value(image, row3, col3))
+
+    print(i11)
+    print(i12)
+    print(i13)
+    print(i21)
+    print(i22)
+    print(i23)
+    print(i31)
+    print(i32)
+    print(i33)
+
+    # checking for glyph1 pattern
+    if(     (i13 - i11 > WEAK_COLOR_THRESHOLD and i13 - i12 > WEAK_COLOR_THRESHOLD) 
+       and  (i22 - i21 > WEAK_COLOR_THRESHOLD and i22 - i23 > WEAK_COLOR_THRESHOLD)
+       and  (i31 - i32 > WEAK_COLOR_THRESHOLD and i33 - i32 > WEAK_COLOR_THRESHOLD)):
+        cells = [0, 0, 1, 0, 1, 0, 1, 0, 1]
+    elif(   (i12 - i11 > WEAK_COLOR_THRESHOLD and i12 - i13 > WEAK_COLOR_THRESHOLD)
+        and (i21 - i22 > WEAK_COLOR_THRESHOLD and i23 - i22 > WEAK_COLOR_THRESHOLD)
+        and (i31 - i32 > WEAK_COLOR_THRESHOLD and i31 - i33 > WEAK_COLOR_THRESHOLD)):
+        cells = [0, 1, 0, 1, 0, 1, 1, 0, 0]
+    else:
+        cells = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    
+#    print("9 cells intensity value")
+#    for idx, val in enumerate(cells):
+#        print(val)
+#        if val > white_threshold:
+#            cells[idx] = 1
+#        else:
+#            cells[idx] = 0
     return cells
+
+#     cells.append(max(image[row1, col1], image[row1, col1+1],image[row1, col1-1]))
+#     cells.append(max(image[row1, col2], image[row1, col2+1],image[row1, col2-1]))
+#     cells.append(max(image[row1, col3], image[row1, col3+1],image[row1, col3-1]))
+#     cells.append(max(image[row2, col1], image[row2, col1+1],image[row2, col1-1]))
+#     cells.append(max(image[row2, col2], image[row2, col2+1],image[row2, col2-1]))
+#     cells.append(max(image[row2, col3], image[row2, col3+1],image[row2, col3-1]))
+#     cells.append(max(image[row3, col1], image[row3, col1+1],image[row3, col1-1]))
+#     cells.append(max(image[row3, col2], image[row3, col2+1],image[row3, col2-1]))
+#     cells.append(max(image[row3, col3], image[row3, col3+1],image[row3, col3-1]))
+    
+# #    print(max(image[row3, col1], image[row3, col1+1],image[row3, col1-1]))
+
+#     # threshold pixels to either black or white
+#     for idx, val in enumerate(cells):
+#         if val > white_threshold:
+#             cells[idx] = 1
+#         else:
+#             cells[idx] = 0
+#     return cells
 
 # compute 3D transformation matrix given homography and camera matrix
 def projection_matrix(camera_parameters, homography):
@@ -213,6 +283,50 @@ def render(img, obj, projection, h, w, color=False):
 
     return img
 
+# given two points, find angle between two corresponding lines
+def get_angle(x1, y1, x2, y2):
+	slope = (y2-y1)/(x2-x1)
+	return math.atan(slope)
+
+# returns two highest value points wrt given "axis"
+def get_two_max_points(points, axis):
+	max1_index=0; max2_index=0; max1_value = -10000; max2_value = -10000
+	if(len(points) != 4):
+		print("not possible")
+	elif(axis == 'y'):
+		for i in range(4):
+			if(points[i][1] > max1_value):
+				max2_value = max1_value
+				max1_value = points[i][1]
+				max2_index = max1_index
+				max1_index = i
+			elif(points[i][1] > max2_value):
+				max2_value = points[i][1]
+				max2_index = i
+		return (points[max1_index][0], points[max1_index][1], points[max2_index][0], points[max2_index][1])
+	else:
+		print("not implemented")
+
+# given points of two rectangles, returns rotation matrix to make base line parallel
+def get_rotation_matrix_between_glyphs(glyph1_points, glyph2_points):
+	# point1 and point2 corresponds points on lines under consideration
+	(point1_1_x, point1_1_y, point2_1_x, point2_1_y) = get_two_max_points(glyph1_points, 'y')
+	(point1_2_x, point1_2_y, point2_2_x, point2_2_y) = get_two_max_points(glyph2_points, 'y')
+	# angle of two lines under consideration wrt horizontal line
+	angle1 = get_angle(point1_1_x, point1_1_y, point2_1_x, point2_1_y)
+	angle2 = get_angle(point1_2_x, point1_2_y, point2_2_x, point2_2_y)
+	# relative anble! don't know write now about sign and physical significance of the difference value
+	relative_angle = angle1 - angle2
+	center = (width_video_frames//2, height_video_frames//2)
+	#rotation_matrix = cv2.getRotationMatrix2D(center, relative_angle, 1.0)
+	rotation_matrix = np.array([[np.cos(relative_angle), np.sin((-1)*relative_angle), 0], 
+								 np.sin(relative_angle), np.cos(relative_angle), 0])
+	base_row = np.array([0,0,1])
+	rotation_matrix = np.vstack([rotation_matrix, base_row])
+	print("rotation matrix")
+	print(rotation_matrix)
+	return rotation_matrix
+
 # reading webcam video or stored video
 def process_video(video_name):
     # real time vs reading from current working directory
@@ -225,8 +339,12 @@ def process_video(video_name):
     while(True):
         # capturing frame by frame
         ret, frame = cap.read()
-        frame = cv2.undistort(frame, mtx, dist, None, new_camera_matrix)
-        
+        ################## deleteThis ############
+#        frame = cv2.imread("test_case3.jpg")
+#        deleteThis = cv2.imread("test_case3.jpg")
+#        deleteThis2 = cv2.imread("test_case3.jpg")
+        ###############################################
+       # frame = cv2.undistort(frame, mtx, dist, None, new_camera_matrix)
         #------------------------------------------ important parameters ------------------------------------------------
         # homography from original glyphs to target image frame from video and corresponding 3D transformation matrix
         glyph1_homography=0; glyph2_homography=0; glyph1_3d_transformation=0; glyph2_3d_transformation=0
@@ -237,36 +355,52 @@ def process_video(video_name):
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         gray = cv2.GaussianBlur(gray,(5,5),0)
         edges = cv2.Canny(gray,50,200)
+#        cv2.imshow('canny', edges)
+#        cv2.waitKey(1000)
         contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         contours = sorted(contours, key = cv2.contourArea, reverse = True)[:10]
+#        cv2.drawContours(deleteThis, contours, -1, (0,255,0), 3)
+#        cv2.imshow('contours', deleteThis)
+#        cv2.waitKey(1000)
         # out of all possible contours, identify if there exist glyphs or not. If so then find corresponding homographies
+        glyph_match_1=0; glyph_match_2=0
+        print("contour size: ")
+        print(len(contours))
         for contour in contours:
+ #           deleteThis1 = cv2.imread("test_case3.jpg")
+ #           cv2.drawContours(deleteThis1, contour, -1, (0,255,0), 3)
+ #           cv2.imshow('perticular contour', deleteThis1)
+ #           cv2.waitKey(1000)
             perimeter = cv2.arcLength(contour, True)
-            approx = cv2.approxPolyDP(contour, 0.01 * perimeter, True)
-            if len(approx) == num_points:
+            approx = cv2.approxPolyDP(contour, 0.02 * perimeter, True)
+            print("number of points")
+            print(len(approx))
+            if len(approx) == num_points: 
                 (fixed_quad,approx, unknown_homography) = get_straight_quad(gray,approx.reshape(4,2))               #### /////
                 resized_img = resize_image(fixed_quad, SHAPE_RESIZE)
                 
                 kernel_rect1 = cv2.getStructuringElement(cv2.MORPH_RECT,(5, 5))
-                resized_img = cv2.erode(resized_img, kernel_rect1, iterations=1) 
+                # resized_img = cv2.erode(resized_img, kernel_rect1, iterations=1) 
+                resized_img = cv2.medianBlur(resized_img, 5)
 
                 cv2.imshow("binary", resized_img)
                 cv2.waitKey(10)
-                if resized_img[5,5] > bl_threshold: continue
+#                if resized_img[5,5] > bl_threshold:
+#                    print("fails black edge check")
+                    # if get_avg_intensity_value(resized_img, 5, 5) > bl_threshold:
+#                    continue
 
                 for i in range(4):
                     glyph_query = get_glyph_pattern(resized_img, bl_threshold, white_threshold)
-                    print("yo")
-                    print( glyph_query)
+                    print("glyph pattern: ")
+                    print(glyph_query)
                     if glyph_query == glyph_pattern_1:
-                        print("got it")
                         is_glyph1_present = True                                                                    #### ////
                         glyph1_homography = unknown_homography                                                      #### ////
                         glyph_match_1 = approx
                         break
 
                     if glyph_query == glyph_pattern_2:
-                        print("gotcha")
                         is_glyph2_present = True                                                                    #### ////
                         glyph2_homography = unknown_homography                                                      #### ////
                         glyph_match_2 = approx
@@ -279,12 +413,23 @@ def process_video(video_name):
         ## calculating 3D transformatin matrix if possible
         # for first glyph
         final_frame = frame
-        if(is_glyph1_present):
+        if(is_glyph1_present and is_glyph2_present):
+            glyph1_3d_transformation = projection_matrix(new_camera_matrix, glyph1_homography)
+            glyph1_3d_transformation = np.dot(get_rotation_matrix_between_glyphs(glyph_match_1, glyph_match_2), glyph1_3d_transformation)
+            final_frame = render(final_frame, object1, glyph1_3d_transformation, glyph_height, glyph_width)
+            #plotting lines under
+            (point1_1_x, point1_1_y, point2_1_x, point2_1_y) = get_two_max_points(glyph_match_1, 'y')
+            (point1_2_x, point1_2_y, point2_2_x, point2_2_y) = get_two_max_points(glyph_match_2, 'y')
+            cv2.line(final_frame, (point1_1_x, point1_1_y), (point2_1_x, point2_1_y), (0, 0, 255), 5)
+            cv2.line(final_frame, (point1_2_x, point1_2_y), (point2_2_x, point2_2_y), (0, 0, 255), 5)
+
+        elif(is_glyph1_present):
+            print("glyph1 found")
             glyph1_3d_transformation = projection_matrix(new_camera_matrix, glyph1_homography)
             # objects initialized earlier, so projecting each object point onto the target frame
             final_frame = render(final_frame, object1, glyph1_3d_transformation, glyph_height, glyph_width)
         # for second glyph
-        if(is_glyph2_present):
+        elif(is_glyph2_present):
             glyph2_3d_transformation = projection_matrix(new_camera_matrix, glyph2_homography)
             # objects initialized earlier, so projecting each object point onto the target frame
             final_frame = render(final_frame, object2, glyph2_3d_transformation, glyph_height, glyph_width)
@@ -292,17 +437,25 @@ def process_video(video_name):
         # finally showing up the video
         cv2.imshow('augmented object video', final_frame)
         cv2.waitKey(10)
+#        break
 
     # when everything done release the capture
     cap.release()
-    cv2.distroyAllWindows()
+    cv2.destroyAllWindows()
 
 # glyphs initialization: find keyPoints and descriptors
 def glyph_initialization():
     global glyph1, glyph2, kp1, kp2, des1, des2, glyph_height, glyph_width, glyph_pattern_1, glyph_pattern_2
     glyph1 = cv2.imread(image_name1, 0)
     glyph2 = cv2.imread(image_name2, 0)
-    (glyph_height, glyph_width) = glyph1.shape
+    # to remove noice
+    glyph1 = cv2.medianBlur(glyph1, 5)
+    glyph2 = cv2.medianBlur(glyph2, 5)
+    (glyph1_height, glyph1_width) = glyph1.shape
+    (glyph2_height, glyph2_width) = glyph2.shape
+    glyph_height = (glyph1_height + glyph2_height)/2
+    glyph_width = (glyph1_width + glyph2_width)/2
+
     glyph_pattern_1 = get_glyph_pattern(glyph1, bl_threshold, white_threshold)
     glyph_pattern_2 = get_glyph_pattern(glyph2, bl_threshold, white_threshold)
     print(glyph_pattern_1)
