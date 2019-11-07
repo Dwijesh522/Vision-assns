@@ -3,8 +3,8 @@ cap	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.p
 cap	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^        cap = cv2.VideoCapture(prev_path + prev_video_names[i])$/;"	v	language:Python
 cap	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^        cap = cv2.VideoCapture(stop_path + stop_video_names[i])$/;"	v	language:Python
 fgbg	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^        fgbg = cv2.createBackgroundSubtractorKNN()$/;"	v	language:Python
-fgbg	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^        fgbg = cv2.createBackgroundSubtractorKNN()$/;"	v	language:Python
-fgbg	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^        fgbg = cv2.createBackgroundSubtractorKNN(1000, 400, False)$/;"	v	language:Python
+fgbg	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^        fgbg = cv2.createBackgroundSubtractorKNN(5000, 400, False)$/;"	v	language:Python
+fgbg	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^        fgbg = cv2.createBackgroundSubtractorKNN(5000, 400, False)$/;"	v	language:Python
 i	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    i=0$/;"	v	language:Python
 i	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    i=0$/;"	v	language:Python
 i	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    i=0$/;"	v	language:Python

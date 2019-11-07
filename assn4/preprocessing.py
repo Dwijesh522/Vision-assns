@@ -19,7 +19,7 @@ if __name__ == '__main__':
     i=0
     while(i < len(stop_video_names)):
         cap = cv2.VideoCapture(stop_path + stop_video_names[i])
-        fgbg = cv2.createBackgroundSubtractorKNN()
+        fgbg = cv2.createBackgroundSubtractorKNN(5000, 400, False)
         ret = 1
         while(ret):
             ret, frame = cap.read()
@@ -32,7 +32,7 @@ if __name__ == '__main__':
     i=0
     while(i < len(next_video_names)):
         cap = cv2.VideoCapture(next_path + next_video_names[i])
-        fgbg = cv2.createBackgroundSubtractorKNN(1000, 400, False)
+        fgbg = cv2.createBackgroundSubtractorKNN(5000, 400, False)
         ret = 1
         while(ret):
             ret, frame = cap.read()
@@ -54,3 +54,5 @@ if __name__ == '__main__':
             cv2.imshow("prev_frames", knn_frame)
             cv2.waitKey(10)
         i += 1
+
+#Try Canny Edge for plain background!
