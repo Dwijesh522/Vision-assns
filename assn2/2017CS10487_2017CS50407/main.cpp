@@ -702,11 +702,11 @@ int main(int argc, char* argv[])
 		Mat left_image = colored_images[ordered_rows[j][i-1]];
 		Mat right_image;
 		warped_image.copyTo(right_image);
-		
+//		
 		Size output_size = Size(left_image.cols + right_image.cols, vertical_row_threshold);
 		// plotting right image
 		warpPerspective(right_image, warped_image, H_right_to_left, output_size);	
-		imwrite("hello" + to_string(i) + ".jpg", warped_image);
+//		imwrite("hello" + to_string(i) + ".jpg", warped_image);
 		// getting left half of panorama == roi
 		Mat half(warped_image, Rect(0, 0, left_image.cols, left_image.rows));
 		// coping left image to it
