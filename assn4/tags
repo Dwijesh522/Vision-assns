@@ -1,23 +1,20 @@
 !_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
-cap	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^        cap = cv2.VideoCapture(next_path + next_video_names[i])$/;"	v	language:Python
-cap	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^        cap = cv2.VideoCapture(prev_path + prev_video_names[i])$/;"	v	language:Python
-cap	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^        cap = cv2.VideoCapture(stop_path + stop_video_names[i])$/;"	v	language:Python
-fgbg	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^        fgbg = cv2.createBackgroundSubtractorKNN()$/;"	v	language:Python
-fgbg	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^        fgbg = cv2.createBackgroundSubtractorKNN(5000, 400, False)$/;"	v	language:Python
-fgbg	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^        fgbg = cv2.createBackgroundSubtractorKNN(5000, 400, False)$/;"	v	language:Python
-i	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    i=0$/;"	v	language:Python
-i	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    i=0$/;"	v	language:Python
-i	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    i=0$/;"	v	language:Python
-knn_frame	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^            knn_frame = fgbg.apply(frame)$/;"	v	language:Python
-knn_frame	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^            knn_frame = fgbg.apply(frame)$/;"	v	language:Python
-knn_frame	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^            knn_frame = fgbg.apply(frame)$/;"	v	language:Python
-next_path	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    next_path = path + "next\/"$/;"	v	language:Python
-next_video_names	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    next_video_names = [f for f in listdir(next_path) if isfile(join(next_path, f))]$/;"	v	language:Python
-path	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    path = input("Enter the path to stop, prev, next folders: ")$/;"	v	language:Python
-prev_path	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    prev_path = path + "prev\/"$/;"	v	language:Python
-prev_video_names	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    prev_video_names = [f for f in listdir(prev_path) if isfile(join(prev_path, f))]$/;"	v	language:Python
-ret	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^        ret = 1$/;"	v	language:Python
-ret	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^        ret = 1$/;"	v	language:Python
-ret	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^        ret = 1$/;"	v	language:Python
-stop_path	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    stop_path = path + "stop\/"$/;"	v	language:Python
-stop_video_names	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    stop_video_names = [f for f in listdir(stop_path) if isfile(join(stop_path, f))]$/;"	v	language:Python
+customDataset	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^class customDataset(Dataset):$/;"	c	language:Python
+custom_dataset	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    custom_dataset = customDataset(csv_file='train_dataset\/training_dataset.csv', $/;"	v	language:Python	class:customDataset
+i	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    i=0$/;"	v	language:Python	class:customDataset
+i	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    i=0$/;"	v	language:Python	class:customDataset
+i	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    i=0$/;"	v	language:Python	class:customDataset
+image_count	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    image_count = 0$/;"	v	language:Python	class:customDataset
+image_count	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    image_count = 0$/;"	v	language:Python	class:customDataset
+image_count	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    image_count = 0$/;"	v	language:Python	class:customDataset
+next_path	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    next_path = path + "next\/"$/;"	v	language:Python	class:customDataset
+next_video_names	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    next_video_names = [f for f in listdir(next_path) if isfile(join(next_path, f))]$/;"	v	language:Python	class:customDataset
+path	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    path = input("Enter the path to stop, prev, next folders: ")$/;"	v	language:Python	class:customDataset
+prev_path	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    prev_path = path + "prev\/"$/;"	v	language:Python	class:customDataset
+prev_video_names	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    prev_video_names = [f for f in listdir(prev_path) if isfile(join(prev_path, f))]$/;"	v	language:Python	class:customDataset
+row	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    row = ["image_names", "label"]$/;"	v	language:Python	class:customDataset
+stop_path	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    stop_path = path + "stop\/"$/;"	v	language:Python	class:customDataset
+stop_video_names	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    stop_video_names = [f for f in listdir(stop_path) if isfile(join(stop_path, f))]$/;"	v	language:Python	class:customDataset
+__getitem__	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    def __getitem__(self, idx):$/;"	m	language:Python	class:customDataset	file:
+__init__	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    def __init__(self, csv_file, root_dir, transform=None):$/;"	m	language:Python	class:customDataset
+__len__	/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/preprocessing.py	/^    def __len__(self):$/;"	m	language:Python	class:customDataset	file:
