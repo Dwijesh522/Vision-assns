@@ -45,9 +45,13 @@ class customDataset(Dataset):
 
         img_name = os.path.join(self.root_dir,
                                 self.label.iloc[idx, 0])
+        # w * h
         image = cv2.imread(img_name,0)
+        # 1 * w * h
         image = image[np.newaxis,:,:]
+        # 1 * 1 * w * h
         image = image[np.newaxis,:,:,:]
+        # numpy array to long tensor
         image = torch.from_numpy(image).long()
         labels = self.label.iloc[idx, 1]
         labels = np.array([labels])
@@ -56,8 +60,8 @@ class customDataset(Dataset):
 
         if self.transform:
             sample = self.transform(sample)
-                # print(sample)
-        # print("Kya main yaha aya?")
+
+        # return sample['image'], sample['label']
         return sample
 class Net(nn.Module):
 
@@ -99,7 +103,7 @@ def train_network(net, custom_dataset):
     # optimizer = optim.Adadelta(net.parameters(), lr=0.01)
     mini_batch = 1405
     loss_values = []
-    for epoch in range(30):  # loop over the dataset multiple times
+    for epoch in range(10):  # loop over the dataset multiple times
         running_loss = 0.0
         # rand_num = random.randrange(30,100,3)        
         for i, data in enumerate(custom_dataset, 0):
@@ -124,20 +128,19 @@ def train_network(net, custom_dataset):
             # forward + backward + optimize
             outputs = net(inputs)
             loss = criterion(outputs, ans)
-            print(str(i) + " done")
             loss.backward()
             optimizer.step()
 
             # print statistics
             running_loss += loss.item()
-            print(loss.item())
             if i % mini_batch == mini_batch-1:    # print every 200 mini-batches
                 print('[%d, %5d] loss: %.3f' %(epoch + 1, i + 1, running_loss / mini_batch))
                 loss_values.append(running_loss/mini_batch)
                 running_loss = 0.0
+        print("epoch " + str(epoch) + " completed...")
     plt.plot(loss_values)
-    print(loss_values)
-    print('Finished Training')
+    # print(loss_values)
+    print('Finished Training...')
 
 
 
@@ -261,23 +264,33 @@ if __name__ == '__main__':
                               ])
     custom_dataset = customDataset(csv_file='train_dataset/train_dataset.csv', 
                                     root_dir='/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/train_dataset/')
-    train_loader = DataLoader(dataset=custom_dataset, batch_size=64, shuffle=True)
-    #print(len(custom_dataset))
-    #print(custom_dataset[0])
+    # in each batch there will be "batch_size" number of elements: image1, image2, ... imagek -> label1, label2,... labelk     if batch_size = k
+    # train_loader = DataLoader(dataset=custom_dataset, batch_size=3, shuffle=True)
     net = Net()
     # print(net)
-    train_network(net, train_loader)
+    train_network(net, custom_dataset)
+    
+    # storing the network
+    path = './lenet.pth'
+    torch.save(net.state_dict(), path)
+    # calculating the training accuracy
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for data in custom_dataset:
+            # images, labels = data
+            images = data['image']
+            labels = data['label']
+            # labels is 2D matrix
+            label_val = labels[0][0]
+            images = images.float()
+            outputs = net(images)
+            # predicted will be a tensor
+            _, predicted = torch.max(outputs.data, 1)
+            # total += labels.size(0)
+            total += label_val
+            # extracting the value of the tensor for comparision
+            predicted_value = (predicted.data.cpu().numpy()[0])
+            correct += (predicted_value == label_val).sum().item()
 
-    # correct = 0
-    # total = 0
-    # with torch.no_grad():
-    #     for data in custom_dataset:
-    #         images, labels = data
-    #         outputs = net(images)
-    #         _, predicted = torch.max(outputs.data, 1)
-    #         total += labels.size(0)
-    #         correct += (predicted == labels).sum().item()
-
-    # print('Accuracy of the network on the train images: %d %%' % (100 * correct / total))
-# print(net)
-#Try Canny Edge for plain background!
+    print('Accuracy of the network on the train images: %d %%' % (100 * correct / total))
