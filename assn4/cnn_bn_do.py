@@ -19,6 +19,7 @@ import pandas as pd
 import os
 import random
 import shutil
+import matplotlib.pyplot as plt 
 
 class customDataset(Dataset):
     """Face Landmarks dataset."""
@@ -98,11 +99,14 @@ class Net(nn.Module):
         # print(num_features)
         return num_features
 
-def train_network(net, dataloader):
+def train_network(net, dataloader, testloader):
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(net.parameters(), lr=0.007, momentum=0.9)
     mini_batch = 1559
     loss_values = []
+    training_loss = []
+    validation_loss = []
+    epochs = []
     for epoch in range(30):  #28 loop over the dataset multiple times
 
         running_loss = 0.0
@@ -124,11 +128,40 @@ def train_network(net, dataloader):
             optimizer.step()
             # print statistics
             running_loss += loss.item()
-            # if i % mini_batch == mini_batch-1:    # print every 200 mini-batches
-            #     print('[%d, %5d] loss: %.3f' %
-            #           (epoch + 1, i + 1, running_loss / mini_batch))
-            #     loss_values.append(running_loss/mini_batch)
-            #     running_loss = 0.0
-        print("loss: " + str((running_loss*128)/1559))
+        training_loss.append((running_loss*32)/2288)                                                    ####
+        print(" training loss: " + str((running_loss*32)/2288))                                         ####
+
+        running_loss = 0
+        # validating on test data set
+        with torch.no_grad():
+            for i, data in enumerate(testloader, 0):
+                # get the inputs; data is a list of [inputs, labels]
+                inputs, labels = data
+
+                # make the parameter gradients zero
+                optimizer.zero_grad()
+
+                # forward + backward + optimize
+                inputs = inputs.float()
+                outputs = net(inputs)
+
+                labels = labels.type(torch.LongTensor)
+                loss = criterion(outputs, labels)
+                
+                # print statistics
+                running_loss += loss.item()
+        validation_loss.append((running_loss*32)/459)                                                   ####
+        epochs.append(epoch)
+        print("validation loss: " + str((running_loss*32)/459))                                         ####
         print("epoch " + str(epoch) + " completed...")
     print('Finished Training...')
+    # drawing plot for training and validation loss
+    plt.plot(epochs, training_loss, label = "Training loss")
+    plt.plot(epochs, validation_loss, label = "Validation loss")
+    # naming the x axis 
+    plt.xlabel('epochs') 
+    # naming the y axis 
+    plt.ylabel('loss') 
+    # show a legend on the plot 
+    plt.legend() 
+    plt.savefig('loss.png')

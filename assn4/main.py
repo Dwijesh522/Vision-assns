@@ -29,12 +29,16 @@ if __name__ == '__main__':
                                     root_dir='/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/train_dataset/')
     # in each batch there will be "batch_size" number of elements: image1, image2, ... imagek -> label1, label2,... labelk     if batch_size = k
     train_loader = DataLoader(dataset=custom_dataset, batch_size=32, shuffle=True)
+    # test loader
+    test_dataset = cnn_bn_do.customDataset(csv_file='test_dataset/test_dataset.csv', 
+                                    root_dir='/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/test_dataset/')
+    test_loader = DataLoader(dataset=test_dataset, batch_size=32, shuffle=True)
     #########################
     it = iter(train_loader)
     image, label = it.next()
     #########################
     net = cnn_bn_do.Net()
-    cnn_bn_do.train_network(net, train_loader)
+    cnn_bn_do.train_network(net, train_loader, test_loader)
     
     # storing the network
     path = './lenet.pth'
@@ -62,9 +66,6 @@ if __name__ == '__main__':
     # print("\ndefault path: /home/dwijesh/Documents/sem5/vision/assns/assn4_data/test_videos/\n")
     # test_dataset_path = input("Enter the path to test_dataset folders: ")
     # video_to_dataset.store_dataset_from_video(test_dataset_path, "test_dataset.csv", "test_dataset", 15)
-    custom_dataset = cnn_bn_do.customDataset(csv_file='test_dataset/test_dataset.csv', 
-                                    root_dir='/home/dwijesh/Documents/sem5/vision/assns/Vision-assns/assn4/test_dataset/')
-    test_loader = DataLoader(dataset=custom_dataset, batch_size=32, shuffle=True)
     # calculating test accuracy
     correct = 0
     total = 0
