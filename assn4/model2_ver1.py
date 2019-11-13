@@ -101,7 +101,7 @@ class Net(nn.Module):
 
 def train_network(net, dataloader, testloader):
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.RMSprop(net.parameters(), lr=0.00621, centered = True)
+    optimizer = optim.RMSprop(net.parameters(), lr=0.0062, centered = True)
     mini_batch = 1559
     loss_values = []
     training_loss = []

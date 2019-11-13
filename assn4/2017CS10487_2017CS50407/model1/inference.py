@@ -5,17 +5,13 @@ import preprocessing
 def infer(net):
 	# capturing video from webcam
 	cap = cv2.VideoCapture(0)
-	fgbg = cv2.createBackgroundSubtractorKNN()
 	while(True):
 		# capturing frame by frame
 		ret, frame = cap.read()
 		frame = cv2.flip(frame,1)
 		cv2.imshow("frames", frame)
 		cv2.waitKey(100)
-
-		# canny_frame = preprocessing.apply_canny(frame, 20, 50, 50, 50)
-		canny_frame = fgbg.apply(frame)
-		canny_frame = cv2.resize(canny_frame, (50, 50), interpolation = cv2.INTER_AREA)
+		canny_frame = preprocessing.apply_canny(frame, 20, 50, 50, 50)
 		no_lines = preprocessing.get_number_of_lines(frame, 20, 50)
 		if(no_lines > 3):	
 			# adding input channel dimension: 1

@@ -54,7 +54,7 @@ def store_dataset_from_video(path, csv_file_name,store_it_here, one_of_how_many)
     image_count = 0
     while(i < len(stop_video_names)):
         cap = cv2.VideoCapture(stop_path + stop_video_names[i])
-        fgbg = cv2.createBackgroundSubtractorKNN()
+        fgbg = cv2.createBackgroundSubtractorKNN(5000, 400, False)
         ret = 1
         while(ret):
             ret, frame = cap.read()
@@ -62,13 +62,7 @@ def store_dataset_from_video(path, csv_file_name,store_it_here, one_of_how_many)
             # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             # canny_frame = cv2.Canny(frame,20, 50, apertureSize = 3)
             # canny_frame = cv2.resize(canny_frame, (50, 50), interpolation = cv2.INTER_AREA)
-            # -----------------------------  code of apply canny  -----------------------------------
-            # canny_frame = preprocessing.apply_canny(frame, 20, 50, 50, 50)
-            # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            canny_frame = fgbg.apply(frame)
-            # canny_frame = cv2.Canny(frame,20, 50, apertureSize = 3)
-            canny_frame = cv2.resize(canny_frame, (50, 50), interpolation = cv2.INTER_AREA)
-            # ----------------------------------------------------------------------------------------
+            canny_frame = preprocessing.apply_canny(frame, 20, 50, 50, 50)
             if(image_count%one_of_how_many == 0):
                 rand1 = random.randint(0, 1000000)
                 rand2 = random.randint(0, 1000000)
@@ -85,9 +79,8 @@ def store_dataset_from_video(path, csv_file_name,store_it_here, one_of_how_many)
     i=0
     image_count = 0
     while(i < len(next_video_names)):
-        print("video " + str(i) + " done")
         cap = cv2.VideoCapture(next_path + next_video_names[i])
-        fgbg = cv2.createBackgroundSubtractorKNN()
+        fgbg = cv2.createBackgroundSubtractorKNN(5000, 400, False)
         ret = 1
         while(ret):
             ret, frame = cap.read()
@@ -95,13 +88,7 @@ def store_dataset_from_video(path, csv_file_name,store_it_here, one_of_how_many)
             # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             # canny_frame = cv2.Canny(frame,20, 50, apertureSize = 3)
             # canny_frame = cv2.resize(canny_frame, (50, 50), interpolation = cv2.INTER_AREA)
-            # -----------------------------  code of apply canny  -----------------------------------
-            # canny_frame = preprocessing.apply_canny(frame, 20, 50, 50, 50)
-            # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            canny_frame = fgbg.apply(frame)
-            # canny_frame = cv2.Canny(frame,20, 50, apertureSize = 3)
-            canny_frame = cv2.resize(canny_frame, (50, 50), interpolation = cv2.INTER_AREA)
-            # ----------------------------------------------------------------------------------------
+            canny_frame = preprocessing.apply_canny(frame, 20, 50, 50, 50)
             if(image_count%one_of_how_many == 0):
                 rand1 = random.randint(0, 1000000)
                 rand2 = random.randint(0, 1000000)
@@ -126,13 +113,7 @@ def store_dataset_from_video(path, csv_file_name,store_it_here, one_of_how_many)
             # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             # canny_frame = cv2.Canny(frame,20, 50, apertureSize = 3)
             # canny_frame = cv2.resize(canny_frame, (50, 50), interpolation = cv2.INTER_AREA)
-            # -----------------------------  code of apply canny  -----------------------------------
-            # canny_frame = preprocessing.apply_canny(frame, 20, 50, 50, 50)
-            # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            canny_frame = fgbg.apply(frame)
-            # canny_frame = cv2.Canny(frame,20, 50, apertureSize = 3)
-            canny_frame = cv2.resize(canny_frame, (50, 50), interpolation = cv2.INTER_AREA)
-            # ----------------------------------------------------------------------------------------
+            canny_frame = preprocessing.apply_canny(frame, 20, 50, 50, 50)
             if(image_count%one_of_how_many == 0):
                 rand1 = random.randint(0, 1000000)
                 rand2 = random.randint(0, 1000000)
