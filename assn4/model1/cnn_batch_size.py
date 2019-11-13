@@ -58,33 +58,28 @@ class customDataset(Dataset):
         image = np.expand_dims(sample['image'], axis=0)
         return image, labels[0][0]
         # return sample
-
 class Net(nn.Module):
 
     def __init__(self):
         super(Net, self).__init__()
         # 1 input image channel, 6 output channels, 3x3 square convolution kernel
+        # conv2d( input_channels, out_channels, kernel_size)
         self.conv1 = nn.Conv2d(1, 3, 3)
-        self.bn1 = nn.BatchNorm2d(3)
         self.conv2 = nn.Conv2d(3, 6, 3)
-        self.bn2 = nn.BatchNorm2d(6)
         self.conv3 = nn.Conv2d(6, 10, 3)
-        self.bn3 = nn.BatchNorm2d(10)
         # an affine operation: y = Wx + b
         self.fc1 = nn.Linear(10 * 4 * 4, 40)  
-        # self.bn4 = nn.BatchNorm1d(40)
-        self.dr1 = nn.Dropout(0.15)
         self.fc2 = nn.Linear(40, 3)
         self.soft = nn.Softmax(dim = 1)
 
     def forward(self, x):
         # Max pooling over a (2, 2) window
-        x = F.max_pool2d(torch.relu(self.bn1(self.conv1(x))), (2, 2))
+        x = F.max_pool2d(torch.sigmoid(self.conv1(x)), (2, 2))
         # If the size is a square you can only specify a single number
-        x = F.max_pool2d(torch.relu(self.bn2(self.conv2(x))), 2)
-        x = F.max_pool2d(torch.relu(self.bn3(self.conv3(x))), 2)
+        x = F.max_pool2d(torch.sigmoid(self.conv2(x)), 2)
+        x = F.max_pool2d(torch.sigmoid(self.conv3(x)), 2)
         x = x.view(-1, self.num_flat_features(x))
-        x = torch.relu(self.dr1(self.fc1(x)))
+        x = torch.sigmoid(self.fc1(x))
         x = self.fc2(x)
         x = self.soft(x)
         return x
@@ -100,10 +95,10 @@ class Net(nn.Module):
 
 def train_network(net, dataloader):
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(net.parameters(), lr=0.007, momentum=0.9)
+    optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0.9)
     mini_batch = 1559
     loss_values = []
-    for epoch in range(30):  #28 loop over the dataset multiple times
+    for epoch in range(5):  # loop over the dataset multiple times
 
         running_loss = 0.0
     
@@ -129,6 +124,6 @@ def train_network(net, dataloader):
             #           (epoch + 1, i + 1, running_loss / mini_batch))
             #     loss_values.append(running_loss/mini_batch)
             #     running_loss = 0.0
-        print("loss: " + str((running_loss*128)/1559))
+        print("loss: " + str((running_loss*64)/1559))
         print("epoch " + str(epoch) + " completed...")
     print('Finished Training...')

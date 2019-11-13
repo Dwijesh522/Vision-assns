@@ -46,6 +46,12 @@ class customDataset(Dataset):
                                 self.label.iloc[idx, 0])
         # w * h
         image = cv2.imread(img_name,0)
+        # 1 * w * h
+        image = image[np.newaxis,:,:]
+        # 1 * 1 * w * h
+        image = image[np.newaxis,:,:,:]
+        # numpy array to long tensor
+        image = torch.from_numpy(image).long()
         labels = self.label.iloc[idx, 1]
         labels = np.array([labels])
         labels = labels.astype('float').reshape(-1, 1)
@@ -53,12 +59,9 @@ class customDataset(Dataset):
 
         if self.transform:
             sample = self.transform(sample)
-        
-        # label size must have been compatible with output of the network
-        image = np.expand_dims(sample['image'], axis=0)
-        return image, labels[0][0]
-        # return sample
 
+        # return sample['image'], sample['label']
+        return sample
 class Net(nn.Module):
 
     def __init__(self):
@@ -73,7 +76,7 @@ class Net(nn.Module):
         # an affine operation: y = Wx + b
         self.fc1 = nn.Linear(10 * 4 * 4, 40)  
         # self.bn4 = nn.BatchNorm1d(40)
-        self.dr1 = nn.Dropout(0.15)
+        self.dr1 = nn.Dropout(0.2)
         self.fc2 = nn.Linear(40, 3)
         self.soft = nn.Softmax(dim = 1)
 
@@ -98,37 +101,57 @@ class Net(nn.Module):
         # print(num_features)
         return num_features
 
-def train_network(net, dataloader):
+def train_network(net, custom_dataset):
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(net.parameters(), lr=0.007, momentum=0.9)
-    mini_batch = 1559
+    optimizer = optim.SGD(net.parameters(), lr=0.004, momentum=0.9)
+    # optimizer = optim.Adadelta(net.parameters(), lr=0.01)
+    mini_batch = 1405
     loss_values = []
-    for epoch in range(30):  #28 loop over the dataset multiple times
-
+    for epoch in range(10):  # loop over the dataset multiple times
         running_loss = 0.0
-    
-        for i, data in enumerate(dataloader, 0):
+        print(str(epoch) + " started")
+        # rand_num = random.randrange(30,100,3)        
+        for i, data in enumerate(custom_dataset, 0):
             # get the inputs; data is a list of [inputs, labels]
-            inputs, labels = data
-
+            inputs = data['image']
+            labels = data['label']
+            if(labels[0][0] == 0):
+                ans = torch.zeros([1], dtype = torch.long)
+                ans[0] = 0
+            elif(labels[0][0] == 1):
+                ans = torch.zeros([1], dtype = torch.long)
+                ans[0] = 1
+            else:
+                ans = torch.zeros([1], dtype = torch.long)
+                ans[0] = 2
+            inputs = inputs.float()
+            # print(ans)
+            # break
             # make the parameter gradients zero
             optimizer.zero_grad()
 
             # forward + backward + optimize
-            inputs = inputs.float()
             outputs = net(inputs)
-
-            labels = labels.type(torch.LongTensor)
-            loss = criterion(outputs, labels)
+            loss = criterion(outputs, ans)
             loss.backward()
             optimizer.step()
+
             # print statistics
             running_loss += loss.item()
-            # if i % mini_batch == mini_batch-1:    # print every 200 mini-batches
-            #     print('[%d, %5d] loss: %.3f' %
-            #           (epoch + 1, i + 1, running_loss / mini_batch))
-            #     loss_values.append(running_loss/mini_batch)
-            #     running_loss = 0.0
-        print("loss: " + str((running_loss*128)/1559))
+            if i % mini_batch == mini_batch-1:    # print every 200 mini-batches
+                print('[%d, %5d] loss: %.3f' %(epoch + 1, i + 1, running_loss / mini_batch))
+                loss_values.append(running_loss/mini_batch)
+                running_loss = 0.0
         print("epoch " + str(epoch) + " completed...")
+        os.chdir("/mnt/c/Users/HP/Desktop/COL780/Vision-assns-master/assn4/train_dataset/")
+        df = pd.read_csv('train_dataset.csv')
+        df = df.sample(frac = 1).reset_index(drop = True)
+        os.remove("train_dataset.csv")
+        export_csv = df.to_csv('train_dataset.csv', index = None, header = True)
+        os.chdir("..")
+        print("Shuffling Done!")
+        custom_dataset = customDataset(csv_file='/mnt/c/Users/HP/Desktop/COL780/Vision-assns-master/assn4/train_dataset/train_dataset.csv', 
+                                    root_dir='/mnt/c/Users/HP/Desktop/COL780/Vision-assns-master/assn4/train_dataset/')
+    plt.plot(loss_values)
+    # print(loss_values)
     print('Finished Training...')
