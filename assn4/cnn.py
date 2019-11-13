@@ -68,22 +68,27 @@ class Net(nn.Module):
         super(Net, self).__init__()
         # 1 input image channel, 6 output channels, 3x3 square convolution kernel
         self.conv1 = nn.Conv2d(1, 3, 5)
+        self.bn1 = nn.BatchNorm2d(3)
         self.conv2 = nn.Conv2d(3, 6, 3)
+        self.bn2 = nn.BatchNorm2d(6)
         self.conv3 = nn.Conv2d(6, 10, 3)
+        self.bn3 = nn.BatchNorm2d(10)
         # an affine operation: y = Wx + b
         self.fc1 = nn.Linear(10 * 4 * 4, 40)  
+        # self.bn4 = nn.BatchNorm1d(40)
+        self.dr1 = nn.Dropout(0.25)
         self.fc2 = nn.Linear(40, 3)
         self.soft = nn.Softmax(dim = 1)
 
     def forward(self, x):
         # Max pooling over a (2, 2) window
-        x = F.max_pool2d(torch.sigmoid(self.conv1(x)), (2, 2))
+        x = F.max_pool2d(torch.relu(self.bn1(self.conv1(x))), (2, 2))
         # If the size is a square you can only specify a single number
-        x = F.max_pool2d(torch.sigmoid(self.conv2(x)), 2)
-        x = F.max_pool2d(torch.sigmoid(self.conv3(x)), 2)
+        x = F.max_pool2d(torch.relu(self.bn2(self.conv2(x))), 2)
+        x = F.max_pool2d(torch.relu(self.bn3(self.conv3(x))), 2)
         x = x.view(-1, self.num_flat_features(x))
-        x = torch.sigmoid(self.fc1(x))
-        x = self.fc2(x)
+        x = torch.relu(self.dr1(self.fc1(x)))
+        x = self.dr1(self.fc2(x))
         x = self.soft(x)
         return x
 
@@ -98,12 +103,13 @@ class Net(nn.Module):
 
 def train_network(net, custom_dataset):
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0.9)
+    optimizer = optim.SGD(net.parameters(), lr=0.004, momentum=0.9)
     # optimizer = optim.Adadelta(net.parameters(), lr=0.01)
     mini_batch = 1405
     loss_values = []
-    for epoch in range(30):  # loop over the dataset multiple times
+    for epoch in range(10):  # loop over the dataset multiple times
         running_loss = 0.0
+        print(str(epoch) + " started")
         # rand_num = random.randrange(30,100,3)        
         for i, data in enumerate(custom_dataset, 0):
             # get the inputs; data is a list of [inputs, labels]
@@ -137,6 +143,15 @@ def train_network(net, custom_dataset):
                 loss_values.append(running_loss/mini_batch)
                 running_loss = 0.0
         print("epoch " + str(epoch) + " completed...")
+        os.chdir("/mnt/c/Users/HP/Desktop/COL780/Vision-assns-master/assn4/train_dataset/")
+        df = pd.read_csv('train_dataset.csv')
+        df = df.sample(frac = 1).reset_index(drop = True)
+        os.remove("train_dataset.csv")
+        export_csv = df.to_csv('train_dataset.csv', index = None, header = True)
+        os.chdir("..")
+        print("Shuffling Done!")
+        custom_dataset = customDataset(csv_file='/mnt/c/Users/HP/Desktop/COL780/Vision-assns-master/assn4/train_dataset/train_dataset.csv', 
+                                    root_dir='/mnt/c/Users/HP/Desktop/COL780/Vision-assns-master/assn4/train_dataset/')
     plt.plot(loss_values)
     # print(loss_values)
     print('Finished Training...')
